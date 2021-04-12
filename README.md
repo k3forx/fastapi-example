@@ -35,5 +35,26 @@ After containers successfully run, you can check an endpoint with `curl` command
 
 ## Deploy on Kubernetes
 
+You can deploy the application on Kubernetes.
+
+```bash
+> kubectl create ns database
+namespace/database created
+
+> cd k8s/mysql
+
+> kubectl apply -k overlays/database
+
+```
+
+You can login the database `test` with the following command.
+
+```bash
+
+> kubectl exec -it mysql-0 -n database -- mysql -uroot -p$(kubectl get secret -n database  mysql-secret -o yaml | grep MYSQL_ROOT_PASSWORD | sed 's/.*.: \(.*\)/\1/' | base64 --decode) test
+
+```
+
 TODO
-- [ ] Prepare a pod for MySQL
+- [x] Prepare a pod for MySQL
+- [ ] Enable the application to communicate MySQL container

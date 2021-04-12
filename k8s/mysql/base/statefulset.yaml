@@ -29,6 +29,9 @@ spec:
           image: mysql:5.7
           ports:
             - containerPort: 3306
+          envFrom:
+            - secretRef:
+                name: mysql-secret
           volumeMounts:
             - name: mysql-storage
               mountPath: /var/lib/mysql
@@ -36,6 +39,15 @@ spec:
               mountPath: /tmp/init
             - name: sql-init
               mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: sql-init
+          emptyDir: {}
+        - name: mycnf
+          configMap:
+            name: mycnf
+        - name: entrypoint
+          configMap:
+            name: entrypoint
   volumeClaimTemplates:
     - metadata:
         name: mysql-storage

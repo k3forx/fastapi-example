@@ -16,6 +16,9 @@ services:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       timeout: 10s
       retries: 5
+    volumes:
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./db/data.sql:/docker-entrypoint-initdb.d/02_data.sql
 
   fastapi:
     build: ./src

@@ -1,4 +1,4 @@
-"""Functions related to manipulating MySQL database."""
+from os import getenv
 from app.utils import get_logger
 import pymysql
 
@@ -44,7 +44,7 @@ class MySQL:
         self.__db_connection.commit()
 
     def __reconnect_to_db(self):
-        is_connection_established = self.__db_connection.open()
+        is_connection_established = self.__db_connection.open
         if is_connection_established:
             return
         else:
@@ -53,3 +53,13 @@ class MySQL:
                 return
             except Exception as e:
                 logger.error(f"Failed to reconnect {e}")
+
+
+db_config = {
+    "host": getenv("MYSQL_HOST"),
+    "user": getenv("MYSQL_USER"),
+    "db": getenv("MYSQL_DATABASE"),
+    "password": getenv("MYSQL_PASSWORD"),
+    "charset": "utf8mb4",
+}
+mysql = MySQL(db_config)

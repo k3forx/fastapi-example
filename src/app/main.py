@@ -1,30 +1,24 @@
 from fastapi import FastAPI
+from app.db import mysql
+from app.api import ping, notes
+from app.utils import get_logger
 
-from os import getenv
-from app.db import MySQL
-from app.api import ping
+logger = get_logger()
 
 app = FastAPI()
-
-db_config = {
-    "host": getenv("MYSQL_HOST"),
-    "user": getenv("MYSQL_USER"),
-    "db": getenv("MYSQL_DATABASE"),
-    "password": getenv("MYSQL_PASSWORD"),
-    "charset": "utf8mb4",
-}
-mysql = MySQL(db_config)
 
 
 @app.on_event("startup")
 def startup():
-    print(db_config)
+    logger.info("Make connection to database")
     mysql.make_connection()
 
 
 @app.on_event("shutdown")
 def shutdown():
     mysql.close_connection()
+    logger.info("Close connection to database")
 
 
 app.include_router(ping.router)
+app.include_router(notes.router, prefix="/notes", tags=["notes"])

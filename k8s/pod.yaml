@@ -8,3 +8,4 @@ spec:
   containers:
   - name: fastapi
     image: kanata333/fastapi-example:v1.0.0
+    imagePullPolicy: IfNotPresent

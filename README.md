@@ -26,3 +26,14 @@ After containers successfully run, you can check an endpoint with `curl` command
 > green unit_tests -vvv --run-coverage
 
 ```
+
+# Deploy on Kubernetes
+
+TODO
+- [ ] Prepare a pod for MySQL
+
+```docker
+
+kubectl apply -f k8s/pod.yaml
+
+```

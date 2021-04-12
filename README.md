@@ -13,7 +13,7 @@ After containers successfully run, you can check an endpoint with `curl` command
 ```bash
 
 > curl localhost:8002/ping
-{"ping":"pong!"}% 
+{"ping":"pong!"}%
 
 ```
 

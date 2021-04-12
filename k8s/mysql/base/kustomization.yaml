@@ -1,0 +1,15 @@
+resources:
+  - statefulset.yaml
+  - service.yaml
+
+commonLabels:
+  app: mysql
+
+configMapGenerator:
+  - name: entrypoint
+    files:
+      - ./config/1_schema.sql
+
+  - name: mycnf
+    files:
+      - ./config/my.cnf

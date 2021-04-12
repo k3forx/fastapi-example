@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+spec:
+  serviceName: mysql-headless
+  replicas: 1
+  template:
+    spec:
+      initContainers:
+        - name: "init-mysql"
+          image: "nginx:alpine"
+          command:
+            - sh
+            - -c
+            - |
+              cp /tmp/init/* /docker-entrypoint-initdb.d
+              # envsubst < /tmp/init/3_grant.sql > /docker-entrypoint-initdb.d/3_grant.sql
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+            - name: entrypoint
+              mountPath: /tmp/init
+            - name: sql-init
+              mountPath: /docker-entrypoint-initdb.d
+      containers:
+        - name: mysql
+          imagePullPolicy: IfNotPresent
+          image: mysql:5.7
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+            - name: entrypoint
+              mountPath: /tmp/init
+            - name: sql-init
+              mountPath: /docker-entrypoint-initdb.d
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-storage
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi

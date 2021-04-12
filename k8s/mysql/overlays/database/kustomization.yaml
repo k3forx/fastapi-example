@@ -1,0 +1,5 @@
+namespace: database
+bases:
+  - ../../base
+resources:
+  - secret.yaml

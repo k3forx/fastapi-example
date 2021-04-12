@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_DATABASE: Usergram
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 10s
+      retries: 5
+
+  fastapi:
+    build: ./src
+    depends_on:
+      - mysql
+    container_name: fastapi
+    command: sh -c "sleep 10; uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000"
+    volumes:
+      - ./src:/usr/src/app/
+    ports:
+      - 8002:8000
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_DATABASE: Usergram
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+      MYSQL_ROOT_PASSWORD: root

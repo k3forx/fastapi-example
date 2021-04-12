@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: user-list-api
+  labels:
+    app: user-list-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: user-list-api
+  template:
+    metadata:
+      labels:
+        app: user-list-api
+    spec:
+      containers:
+      - name: user-list-api
+        image:
+        ports:
+        - containerPort: 9999

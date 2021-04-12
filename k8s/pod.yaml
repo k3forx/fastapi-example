@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fastapi-example
+  labels:
+    app: fastapi-example
+spec:
+  containers:
+  - name: fastapi
+    image: kanata333/fastapi-example:v1.0.0

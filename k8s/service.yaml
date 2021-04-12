@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-example
+spec:
+  type: ClusterIP
+  selector:
+    app: fastapi-example
+  ports:
+  - protocol: TCP
+    port: 9999
+    targetPort: 80
+

@@ -1,21 +1,23 @@
 apiVersion: v1
 kind: Deployment
 metadata:
-  name: user-list-api
+  name: fastapi-example
   labels:
-    app: user-list-api
+    app: fastapi-example
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: user-list-api
+      app: fastapi-example
   template:
     metadata:
       labels:
-        app: user-list-api
+        app: fastapi-example
     spec:
       containers:
-      - name: user-list-api
-        image:
+      - name: fastapi-example
+        image: kanata333/fastapi-example:v1.1.0
+        imagePullPolicy: Always
         ports:
-        - containerPort: 9999
+        - containerPort: 8000
+      restartPolicy: Never

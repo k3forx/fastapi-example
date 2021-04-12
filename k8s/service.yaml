@@ -8,6 +8,6 @@ spec:
     app: fastapi-example
   ports:
   - protocol: TCP
-    port: 9999
-    targetPort: 80
+    port: 8000
+    targetPort: 8000
 

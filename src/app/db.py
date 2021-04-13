@@ -20,12 +20,14 @@ class MySQL:
     def execute_fetch_query(self, query):
         self.__reconnect_to_db()
         try:
+            logger.info("Executing query...")
             with self.__db_connection.cursor() as cursor:
                 cursor.execute(query)
                 results = cursor.fetchall()
+                logger.info("Successfully getting the results")
                 return results
         except Exception as e:
-            logger.error(e)
+            logger.error(f"Error occur while executing query: {e}")
 
     def execute_commit_query(self, query):
         self.__reconnect_to_db()
@@ -46,9 +48,11 @@ class MySQL:
     def __reconnect_to_db(self):
         is_connection_established = self.__db_connection.open
         if is_connection_established:
+            logger.info("Connection is already established")
             return
         else:
             try:
+                logger.info("Reconnecting to the database...")
                 self.__db_connection.ping(reconnect=True)
                 return
             except Exception as e:

@@ -1,0 +1,10 @@
+namespace: api-app
+bases:
+  - ../../base
+patchesStrategicMerge:
+  - deployment.yaml
+configMapGenerator:
+  - name: fastapi-configmap
+    env: env.txt
+resources:
+    - secret.yaml

@@ -1,11 +1,14 @@
 from fastapi import APIRouter, HTTPException
 from app.db import mysql
+from app.utils import get_logger
 
 router = APIRouter()
+logger = get_logger()
 
 
 @router.get("/{note_id}/")
 def get_note_by_id(note_id: int):
+    logger.info(f"Get notes by id: id = {note_id}")
     query = f"SELECT * FROM notes WHERE id = {note_id};"
     try:
         result = mysql.execute_fetch_query(query)[0]

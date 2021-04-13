@@ -37,13 +37,30 @@ After containers successfully run, you can check an endpoint with `curl` command
 
 You can deploy the application on Kubernetes.
 
+### Deploy MySQL
+
+First, you need to run MySQL container by statefulset.
+
 ```bash
 > kubectl create ns database
 namespace/database created
 
-> cd k8s/mysql
+> kubectl apply -k k8s/mysql/overlays/database
+configmap/entrypoint-fgtb28gb95 created
+configmap/mycnf-m7dfc72fd9 created
+secret/mysql-secret created
+service/mysql-headless created
+statefulset.apps/mysql created
 
-> kubectl apply -k overlays/database
+> kubectl get all -n database
+NAME          READY   STATUS    RESTARTS   AGE
+pod/mysql-0   1/1     Running   0          33s
+
+NAME                     TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE
+service/mysql-headless   ClusterIP   None         <none>        3306/TCP   33s
+
+NAME                     READY   AGE
+statefulset.apps/mysql   1/1     33s
 
 ```
 
@@ -55,6 +72,28 @@ You can login the database `test` with the following command.
 
 ```
 
+### Deploy the application
+
+After, you successfully deploy MySQL container, then you can deploy the application.
+
+```bash
+> kubectl create ns api-app
+namespace/api-app created
+
+```
+
 TODO
 - [x] Prepare a pod for MySQL
 - [ ] Enable the application to communicate MySQL container
+
+# How to update the image?
+
+```bash
+
+> docker login
+
+> docker build src/ -t kanata333/fastapi-example:v<version tag>
+
+> docker push kanata333/fastapi-example:v<version tag>
+
+```

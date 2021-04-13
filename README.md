@@ -10,14 +10,21 @@ This application is a REST API application with `FastAPI` framework and it expos
 You can check the above endpoints with Docker or Kubernetes.
 ## TODO
 ### The application
+
 - [x] The application can communicate with MySQL container
 - [ ] The application can accept `POST` request
 - [ ] The application can accept `PUT` request
 - [ ] The application can accept `DELETE` request
 ### MySQL
+
 - [x] Launch MySQL container with Kubernetes
 - [ ] Create MySQL user when the container is initialized
 
+### Others
+
+- [ ] Introduce Argo CD
+- [ ] Introduce Prometheus
+- [ ] Introduce Grafana
 ## Run in local
 
 You can test the applicaion in your local with docker.

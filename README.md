@@ -127,6 +127,21 @@ If you don't see a command prompt, try pressing enter.
 pod "curl" deleted
 
 ```
+
+# Deploy the application by Argo CD
+
+```bash
+
+> kubectl apply -f namespace.yaml
+namespace/argocd created
+
+> kubectl get ns | grep argocd
+argocd              Active   56s
+
+
+```
+
+
 ## How to update the image?
 
 ```bash

@@ -1,4 +1,14 @@
 # Example application with FastAPI
+
+## What can this application do?
+
+This API application exposes the following endpoints.
+
+* `/ping`
+* `/notes/{id}`
+
+You can check the above endpoints with Docker or Kubernetes.
+
 ## Run in local
 
 You can test the applicaion in your local with docker.
@@ -80,11 +90,25 @@ After, you successfully deploy MySQL container, then you can deploy the applicat
 > kubectl create ns api-app
 namespace/api-app created
 
+> kubectl apply -k k8s/fastapi/overlays/api-app/
+configmap/fastapi-configmap-dctbbf26g5 created
+secret/fastapi-secret created
+service/fastapi created
+deployment.apps/fastapi created
+
+> kubectl get pod -n api-app
+NAME                       READY   STATUS    RESTARTS   AGE
+fastapi-6c4f4bb67f-bvhdp   1/1     Running   0          28s
+fastapi-6c4f4bb67f-hq7qq   1/1     Running   0          28s
+fastapi-6c4f4bb67f-wbhzp   1/1     Running   0          28s
+
+
+
 ```
 
 TODO
 - [x] Prepare a pod for MySQL
-- [ ] Enable the application to communicate MySQL container
+- [x] Enable the application to communicate MySQL container
 
 # How to update the image?
 

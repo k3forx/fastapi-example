@@ -4,11 +4,13 @@
 
 This application is a REST API application with `FastAPI` framework and it exposes the following endpoints.
 
-* `/ping`
-* `/notes/{id}`
+- `/ping`
+- `/notes/{id}`
 
 You can check the above endpoints with Docker or Kubernetes.
+
 ## TODO
+
 ### The application
 
 - [x] The application can communicate with MySQL container
@@ -16,6 +18,7 @@ You can check the above endpoints with Docker or Kubernetes.
 - [ ] The application can accept `PUT` request
 - [ ] The application can accept `DELETE` request
 - [ ] Unify the way of logging
+
 ### MySQL
 
 - [x] Launch MySQL container with Kubernetes
@@ -23,23 +26,22 @@ You can check the above endpoints with Docker or Kubernetes.
 
 ### Others
 
-- [ ] Introduce Argo CD
+- [x] Introduce Argo CD in local
+- [ ] Expose Argo CD with service
 - [ ] Introduce Prometheus
 - [ ] Introduce Grafana
+
 ## Run in local
 
 You can test the applicaion in your local with docker.
 
 ```bash
-
 > docker-compose up -d --build
-
 ```
 
 After containers successfully run, you can check an endpoint with `curl` command
 
 ```bash
-
 > curl localhost:8002/ping
 {"ping":"pong!"}%
 
@@ -48,16 +50,14 @@ After containers successfully run, you can check an endpoint with `curl` command
 
 > curl localhost:8002/notes/2/
 {"detail":"Note not found"}%
-
 ```
+
 ## Unit test
 
 ```bash
-
 > cd src
 
 > green unit_tests -vvv --run-coverage
-
 ```
 
 ## Deploy on Kubernetes
@@ -88,15 +88,12 @@ service/mysql-headless   ClusterIP   None         <none>        3306/TCP   33s
 
 NAME                     READY   AGE
 statefulset.apps/mysql   1/1     33s
-
 ```
 
 You can login the database `test` with the following command.
 
 ```bash
-
 > kubectl exec -it mysql-0 -n database -- mysql -uroot -p$(kubectl get secret -n database  mysql-secret -o yaml | grep MYSQL_ROOT_PASSWORD | sed 's/.*.: \(.*\)/\1/' | base64 --decode) test
-
 ```
 
 ### Deploy the application
@@ -125,31 +122,58 @@ If you don't see a command prompt, try pressing enter.
 {"ping":"pong!"}/ $ curl fastapi.api-app.svc.cluster.local:8000/notes/1/
 {"id":1,"title":"Beyond the legacy code","description":"Awesome book!"}/ $ exit
 pod "curl" deleted
-
 ```
 
 # Deploy the application by Argo CD
 
-```bash
+The following instructions may work only when you use `minikube` as Kubernetes cluster.
 
+## Set up Argo CD
+
+```bash
 > kubectl apply -f namespace.yaml
 namespace/argocd created
 
 > kubectl get ns | grep argocd
 argocd              Active   56s
 
+> kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
+> minikube service argocd-server -n argocd --url
 ```
 
+You can see the console with the url you got the above command.
+
+## Login Argo CD
+
+Get login password by the following command.
+
+```bash
+> kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+```
+
+You can login Argo CD with username `admin` and the password you got.
+
+## Create a project and an application
+
+```bash
+> kubectl apply -f project.yaml -n argocd
+appproject.argoproj.io/api-app created
+
+> kubectl apply -f fastapi.yaml -n argocd
+application.argoproj.io/api-app-fastapi created
+```
+
+## Check on the status of application on UI
+
+https://user-images.githubusercontent.com/45956169/114566236-06113b80-9cad-11eb-84c6-bc4937d9842c.png
 
 ## How to update the image?
 
 ```bash
-
 > docker login
 
 > docker build src/ -t kanata333/fastapi-example:v<version tag>
 
 > docker push kanata333/fastapi-example:v<version tag>
-
 ```

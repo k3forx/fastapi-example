@@ -15,6 +15,7 @@ You can check the above endpoints with Docker or Kubernetes.
 - [ ] The application can accept `POST` request
 - [ ] The application can accept `PUT` request
 - [ ] The application can accept `DELETE` request
+- [ ] Unify the way of logging
 ### MySQL
 
 - [x] Launch MySQL container with Kubernetes

@@ -1,0 +1,18 @@
+name: auto-assign
+
+on:
+  pull_request:
+    types: opened
+
+jobs:
+  assign:
+    name: Set assignee
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set assignee
+        run: |
+          curl -X POST \
+               -H "Content-Type: application/json" \
+               -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+               -d "{ \"assignees\": [ \"${{ github.actor }}\" ] }" \
+               https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/assignees

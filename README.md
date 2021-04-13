@@ -2,12 +2,21 @@
 
 ## What can this application do?
 
-This API application exposes the following endpoints.
+This application is a REST API application with `FastAPI` framework and it exposes the following endpoints.
 
 * `/ping`
 * `/notes/{id}`
 
 You can check the above endpoints with Docker or Kubernetes.
+## TODO
+### The application
+- [x] The application can communicate with MySQL container
+- [ ] The application can accept `POST` request
+- [ ] The application can accept `PUT` request
+- [ ] The application can accept `DELETE` request
+### MySQL
+- [x] Launch MySQL container with Kubernetes
+- [ ] Create MySQL user when the container is initialized
 
 ## Run in local
 
@@ -102,15 +111,15 @@ fastapi-6c4f4bb67f-bvhdp   1/1     Running   0          28s
 fastapi-6c4f4bb67f-hq7qq   1/1     Running   0          28s
 fastapi-6c4f4bb67f-wbhzp   1/1     Running   0          28s
 
-
+> kubectl run --restart Never --image curlimages/curl:7.68.0 -it --rm curl sh
+If you don't see a command prompt, try pressing enter.
+/ $ curl fastapi.api-app.svc.cluster.local:8000/ping
+{"ping":"pong!"}/ $ curl fastapi.api-app.svc.cluster.local:8000/notes/1/
+{"id":1,"title":"Beyond the legacy code","description":"Awesome book!"}/ $ exit
+pod "curl" deleted
 
 ```
-
-TODO
-- [x] Prepare a pod for MySQL
-- [x] Enable the application to communicate MySQL container
-
-# How to update the image?
+## How to update the image?
 
 ```bash
 

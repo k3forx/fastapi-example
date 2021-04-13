@@ -131,7 +131,7 @@ The following instructions may work only when you use `minikube` as Kubernetes c
 ## Set up Argo CD
 
 ```bash
-> kubectl apply -f namespace.yaml
+> kubectl apply -f argocd/setup/namespace.yaml
 namespace/argocd created
 
 > kubectl get ns | grep argocd
@@ -139,10 +139,10 @@ argocd              Active   56s
 
 > kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-> minikube service argocd-server -n argocd --url
+> kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
 
-You can see the console with the url you got the above command.
+You can see the console with `localhost:8080`.
 
 ## Login Argo CD
 

@@ -1,3 +1,4 @@
+USE test;
 INSERT INTO notes (
   title,
   description

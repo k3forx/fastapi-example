@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from app.db import mysql
+from app.mysql_client import mysql
 from app.utils import get_logger
 
 router = APIRouter()

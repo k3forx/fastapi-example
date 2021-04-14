@@ -1,4 +1,4 @@
-# CURD application with FastAPI
+# CRUD application with FastAPI
 
 ## What can this application do?
 

@@ -19,6 +19,6 @@ jobs:
         run: |
           cd ./src
           pip install -r ../requirements.test.txt && \
-          pip install requirements.txt
-          # green unit_tests -vvv --run-coverage
+          pip install -r requirements.txt
+          green unit_tests -vvv --run-coverage
 

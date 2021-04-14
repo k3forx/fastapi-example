@@ -28,6 +28,7 @@ services:
     command: sh -c "sleep 10; uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000"
     volumes:
       - ./src:/usr/src/app/
+      - ./integration_test:/usr/src/
     ports:
       - 8002:8000
     environment:  # TODO: Bundle them into a file
@@ -36,3 +37,6 @@ services:
       MYSQL_USER: mysql
       MYSQL_PASSWORD: mysql
       MYSQL_ROOT_PASSWORD: root
+networks:
+  default:
+    name: fastapi

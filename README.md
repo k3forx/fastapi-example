@@ -157,10 +157,16 @@ You can login Argo CD with username `admin` and the password you got.
 ## Create a project and an application
 
 ```bash
-> kubectl apply -f project.yaml -n argocd
+> kubectl apply -f argocd/projects/database/project.yaml
+appproject.argoproj.io/database created
+
+> kubectl apply -f argocd/projects/database/mysql.yaml
+application.argoproj.io/database-mysql created
+
+> kubectl apply -f argocd/projects/api-app/project.yaml
 appproject.argoproj.io/api-app created
 
-> kubectl apply -f fastapi.yaml -n argocd
+> kubectl apply -f argocd/projects/api-app/fastapi.yaml
 application.argoproj.io/api-app-fastapi created
 ```
 

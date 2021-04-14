@@ -30,6 +30,8 @@ You can check the above endpoints with Docker or Kubernetes.
 - [ ] Expose Argo CD with service
 - [ ] Introduce Prometheus
 - [ ] Introduce Grafana
+- [ ] Send logs to logstash
+- [ ] See the logs in Kibana
 
 ## Run in local
 

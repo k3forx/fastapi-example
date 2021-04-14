@@ -1,0 +1,24 @@
+name: unit-test
+
+on:
+  pull_request:
+    paths:
+      - src/**
+      - .github/workflows/unit-test.yaml
+
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Execute unit test
+        run: |
+          cd ./src
+          pip install -r ../requirements.test.txt && \
+          pip install requirements.txt
+          # green unit_tests -vvv --run-coverage
+

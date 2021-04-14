@@ -1,11 +1,11 @@
-# Example application with FastAPI
+# CURD application with FastAPI
 
 ## What can this application do?
 
 This application is a REST API application with `FastAPI` framework and it exposes the following endpoints.
 
 - `/ping`
-- `/notes/{id}`
+- `/notes/{id}` (`GET` request)
 
 You can check the above endpoints with Docker or Kubernetes.
 

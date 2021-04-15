@@ -54,7 +54,11 @@ After containers successfully run, you can check an endpoint with `curl` command
 {"detail":"Note not found"}%
 ```
 
-## Unit test
+## Test in local
+
+There are workflows for each tests (unit test and integration test). These workflows are triggered when you create or update a PR based on some conditions.
+
+### Unit test
 
 ```bash
 > cd src
@@ -62,11 +66,23 @@ After containers successfully run, you can check an endpoint with `curl` command
 > green unit_tests -vvv --run-coverage
 ```
 
+### Integration test
+
+```bash
+> docker-compose up -d
+
+> chmod +x check-api-endpoints.sh
+
+> bash check-api-endpoints.sh
+```
+
 ## Deploy on Kubernetes
 
-You can deploy the application on Kubernetes.
+You can deploy the application on Kubernetes by manual apply or Argo CD
 
-### Deploy MySQL
+### Manual deploy
+
+#### Deploy MySQL
 
 First, you need to run MySQL container by statefulset.
 
@@ -98,7 +114,7 @@ You can login the database `test` with the following command.
 > kubectl exec -it mysql-0 -n database -- mysql -uroot -p$(kubectl get secret -n database  mysql-secret -o yaml | grep MYSQL_ROOT_PASSWORD | sed 's/.*.: \(.*\)/\1/' | base64 --decode) test
 ```
 
-### Deploy the application
+#### Deploy the application
 
 After, you successfully deploy MySQL container, then you can deploy the application.
 
@@ -126,11 +142,11 @@ If you don't see a command prompt, try pressing enter.
 pod "curl" deleted
 ```
 
-# Deploy the application by Argo CD
+### Deploy the application by Argo CD
 
 The following instructions may work only when you use `minikube` as Kubernetes cluster.
 
-## Set up Argo CD
+#### Set up Argo CD
 
 ```bash
 > kubectl apply -f argocd/setup/namespace.yaml
@@ -146,7 +162,7 @@ argocd              Active   56s
 
 You can see the console with `localhost:8080`.
 
-## Login Argo CD
+#### Login Argo CD
 
 Get login password by the following command.
 
@@ -156,7 +172,7 @@ Get login password by the following command.
 
 You can login Argo CD with username `admin` and the password you got.
 
-## Create a project and an application
+#### Create a project and an application
 
 ```bash
 > kubectl apply -f argocd/projects/database/project.yaml
@@ -172,7 +188,7 @@ appproject.argoproj.io/api-app created
 application.argoproj.io/api-app-fastapi created
 ```
 
-## Check on the status of application on UI
+#### Check the status of the applications on UI
 
 <img width="1920" alt="スクリーンショット 2021-04-13 23 13 45" src="https://user-images.githubusercontent.com/45956169/114567227-fb0adb00-9cad-11eb-8d61-a055ce5f4131.png">
 

@@ -23,8 +23,8 @@ jobs:
         run: |
           pip install -r requirements.linter.txt
           npm install prettier@2.2.1
-      - name: isort
-        run: isort --check-only .
+      # - name: isort
+      #   run: isort --check-only .
       - name: black
         run: black --check .
       - name: flake8

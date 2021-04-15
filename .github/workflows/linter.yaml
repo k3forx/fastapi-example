@@ -22,8 +22,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.linter.txt
-      # - name: isort
-      #   run: isort --check-only .
+      - name: isort
+        run: isort --check-only .
       - name: black
         run: black --check .
       - name: flake8

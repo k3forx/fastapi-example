@@ -2,10 +2,10 @@ import unittest
 from datetime import datetime
 from unittest.mock import patch
 
-from fastapi.testclient import TestClient
 from pymysql.err import OperationalError
 
 from app.main import app
+from fastapi.testclient import TestClient
 
 client = TestClient(app)
 

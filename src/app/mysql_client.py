@@ -1,7 +1,9 @@
-from typing import Any, Dict
 from os import getenv
-from app.utils import get_logger
+from typing import Any, Dict
+
 import pymysql
+
+from app.utils import get_logger
 
 logger = get_logger()
 

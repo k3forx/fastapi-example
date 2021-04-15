@@ -1,6 +1,6 @@
-from fastapi import FastAPI
+from app.api import notes, ping
 from app.mysql_client import mysql
-from app.api import ping, notes
+from fastapi import FastAPI
 
 app = FastAPI()
 

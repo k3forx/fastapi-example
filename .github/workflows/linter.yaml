@@ -1,0 +1,37 @@
+name: linter
+
+on:
+  pull_request:
+    paths-ignore:
+      - "*."
+      - "*/.*"
+      - "**Dockerfile"
+      - "**.txt"
+      - "**.png"
+      - "**.sql"
+
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.linter.txt
+          npm install prettier@2.2.1
+      - name: isort
+        run: isort --check-only .
+      - name: black
+        run: black --check .
+      - name: flake8
+        run: flake8 .
+      - name: mypy
+        run: find . -name "*.py" -and -not -path  "*test*" | xargs mypy
+      - name: prettier
+        run: npx prettier --check .
+      - name: shellcheck
+        run: find . -type f -name "*.sh" | xargs shellcheck -e SC1091

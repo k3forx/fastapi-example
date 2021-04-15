@@ -7,7 +7,7 @@ def test_GET_ping():
     path = "/ping"
 
     expect_status_code = 200
-    expect_content = {'ping': 'pong!'}
+    expect_content = {"ping": "pong!"}
     r = requests.get(BASE_ENDPOINT + path)
 
     assert r.status_code, expect_status_code
@@ -20,7 +20,10 @@ def test_GET_note_by_id():
 
     expect_status_code = 200
     expect_content = {
-        'id': 1, 'title': 'Beyond the legacy code', 'description': 'Awesome book!'}
+        "id": 1,
+        "title": "Beyond the legacy code",
+        "description": "Awesome book!",
+    }
     r = requests.get(BASE_ENDPOINT + path)
 
     assert r.status_code, expect_status_code

@@ -1,0 +1,33 @@
+name: integration-test
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/integration-test.yaml"
+      - "src/**"
+      - "docker-compose.yaml"
+      - "db/*.sql"
+      - "!**/*.md"
+
+jobs:
+  integration-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up
+        uses: actions/checkout@v2
+
+      - name: Start docker containers
+        run: docker-compose up -d
+
+      - name: Wait until the containers are ready
+        run: |
+          for i in `seq 1 30`;
+          do
+            curl -X GET -L http://localhost:8002/ping && exit 0
+            sleep 5
+          done
+
+      - name: Check endpoints
+        run: |
+          chmod +x check-api-endpoints.sh
+          ./check-api-endpoints.sh

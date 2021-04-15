@@ -22,7 +22,6 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.linter.txt
-          npm install prettier@2.2.1
       # - name: isort
       #   run: isort --check-only .
       - name: black
@@ -31,7 +30,5 @@ jobs:
         run: flake8 .
       - name: mypy
         run: find . -name "*.py" -and -not -path  "*test*" | xargs mypy
-      - name: prettier
-        run: npx prettier --check .
       - name: shellcheck
         run: find . -type f -name "*.sh" | xargs shellcheck -e SC1091

@@ -1,18 +1,18 @@
 import unittest
 from unittest.mock import MagicMock, patch
+
 from pymysql import InternalError
+
 from app.mysql_client import MySQLClient
 
 
 class TestMySQLClient(unittest.TestCase):
     def setUp(self):
-        self.db_config = {"host": "host",
-                          "port": "port", "hogehoge": "hogahoga"}
+        self.db_config = {"host": "host", "port": "port", "hogehoge": "hogahoga"}
 
     @patch("app.mysql_client.pymysql")
     def test_execute_fetch_query_without_errors(self, mock_pymysql):
-        expected_result = [{"client_id": 1}, {
-            "client_id": 5}, {"client_id": 9}]
+        expected_result = [{"client_id": 1}, {"client_id": 5}, {"client_id": 9}]
         mock_conn = MagicMock()
         mock_cursor = MagicMock()
         mock_pymysql.connect.return_value = mock_conn

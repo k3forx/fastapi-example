@@ -25,7 +25,8 @@ jobs:
         run: |
           ls
           cd ./src
-          isort --check-only .
+          ls
+          isort **/*.py -c -v
       - name: black
         run: black --check .
       - name: flake8

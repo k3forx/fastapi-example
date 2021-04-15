@@ -15,4 +15,5 @@ def get_note_by_id(note_id: int):
         response = {"id": result[0], "title": result[1], "description": result[2]}
         return response
     except Exception as e:
+        logger.error(e)
         raise HTTPException(status_code=404, detail="Note not found")

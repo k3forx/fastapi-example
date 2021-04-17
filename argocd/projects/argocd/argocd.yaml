@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+spec:
+  project: argocd
+
+  source:
+    repoURL: https://github.com/k3forx/fastapi-example
+    targetRevision: master
+    path: argocd/setup
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+
+  syncPolicy:
+    automated: {}

@@ -16,4 +16,4 @@ spec:
     spec:
       containers:
         - name: grafana
-          image: grafana/grafana:v7.5.4
+          image: grafana/grafana:7.5.4-ubuntu

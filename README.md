@@ -29,9 +29,8 @@ You can check the above endpoints with Docker or Kubernetes.
 - [x] Introduce Argo CD in local
 - [ ] Expose Argo CD with service
 - [x] Introduce Prometheus
-- [ ] Introduce Grafana
-- [ ] Send logs to logstash
-- [ ] See the logs in Kibana
+- [x] Introduce Grafana
+- [ ] Introduce ELK
 
 ## Run in local
 

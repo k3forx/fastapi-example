@@ -11,6 +11,6 @@ data:
       # - "first.rules"
       # - "second.rules"
     scrape_configs:
-      - job_name: fast-api
+      - job_name: fastapi
         static_configs:
-          - targets: ["fast-api.api-app.svc.cluster.local:8000"]
+          - targets: ["fastapi.api-app.svc.cluster.local:8000"]

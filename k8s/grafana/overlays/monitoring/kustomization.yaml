@@ -1,0 +1,7 @@
+namespace: monitoring
+
+bases:
+  - ../../base
+
+patchesStrategicMerge:
+  - deployment.yaml

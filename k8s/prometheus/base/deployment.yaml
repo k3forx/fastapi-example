@@ -5,6 +5,7 @@ metadata:
   labels:
     app: prometheus
 spec:
+  backoffLimit: 0
   replicas: 1
   selector:
     matchLabels:
@@ -27,3 +28,4 @@ spec:
         - name: prometheus-config-volume
           configMap:
             name: prometheus-config
+      restartPolicy: Never

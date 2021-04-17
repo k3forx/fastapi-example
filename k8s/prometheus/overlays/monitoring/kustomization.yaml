@@ -6,8 +6,5 @@ bases:
 patchesStrategicMerge:
   - deployment.yaml
 
-resources:
-  - service.yaml
-
 configMapGenerator:
   - name: prometheus

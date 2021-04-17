@@ -8,3 +8,5 @@ patchesStrategicMerge:
 
 configMapGenerator:
   - name: prometheus
+    files:
+      - config.yaml

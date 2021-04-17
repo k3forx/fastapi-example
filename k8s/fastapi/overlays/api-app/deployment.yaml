@@ -16,4 +16,4 @@ spec:
     spec:
       containers:
         - name: fastapi
-          image: kanata333/fastapi-example:v1.2.0
+          image: kanata333/fastapi-example:v1.3.0

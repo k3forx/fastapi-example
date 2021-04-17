@@ -1,0 +1,14 @@
+namespace: monitoring
+
+bases:
+  - ../../base
+
+patchesStrategicMerge:
+  - deployment.yaml
+
+resources:
+  - configmap.yaml
+# configMapGenerator:
+#   - name: prometheus-config
+#     files:
+#       - prometheus.yaml

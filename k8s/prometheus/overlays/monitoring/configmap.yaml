@@ -13,4 +13,4 @@ data:
     scrape_configs:
       - job_name: fast-api
         static_configs:
-          - targets: ["fast-api:8000"]
+          - targets: ["fast-api.api-app.svc.cluster.local:8000"]

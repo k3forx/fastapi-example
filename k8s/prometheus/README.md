@@ -51,7 +51,7 @@ replicaset.apps/prometheus-575865f89f   1         1         1       31m
 
 Argo CD
 
-![image](https://user-images.githubusercontent.com/45956169/115111363-fc444c80-9fba-11eb-83c1-47fc00717551.png)
+<img width="1920" alt="貼り付けた画像_2021_04_17_20_35" src="https://user-images.githubusercontent.com/45956169/115111709-86d97b80-9fbc-11eb-928c-4ee4789255ff.png">
 
 ## Open prometheus UI
 

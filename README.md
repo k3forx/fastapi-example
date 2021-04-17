@@ -194,7 +194,7 @@ application.argoproj.io/api-app-fastapi created
 
 #### Check the status of the applications on UI
 
-<img width="1920" alt="スクリーンショット 2021-04-13 23 13 45" src="https://user-images.githubusercontent.com/45956169/114567227-fb0adb00-9cad-11eb-8d61-a055ce5f4131.png">
+<img width="1920" alt="貼り付けた画像_2021_04_17_20_33" src="https://user-images.githubusercontent.com/45956169/115111652-45e16700-9fbc-11eb-8f9b-325ca3d02886.png">
 
 ## How to update the image?
 

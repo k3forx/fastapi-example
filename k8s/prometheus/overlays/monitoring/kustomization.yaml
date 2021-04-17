@@ -6,7 +6,9 @@ bases:
 patchesStrategicMerge:
   - deployment.yaml
 
-configMapGenerator:
-  - name: prometheus-config
-    files:
-      - prometheus.yaml
+resources:
+  - configmap.yaml
+# configMapGenerator:
+#   - name: prometheus-config
+#     files:
+#       - prometheus.yaml

@@ -68,3 +68,16 @@ You can visit the console with the above URL you got.
 Also, you can check that Prometheus can pull metrics from the application on the UI.
 
 ![image](https://user-images.githubusercontent.com/45956169/115111520-c05db700-9fbb-11eb-8c86-acc58e4c28d6.png)
+
+# About Prometheus
+
+The following sections are for Prometheus.
+
+## Concepts
+
+## Type of metrics
+
+- Counter
+- Gauge
+- Histogram
+- Summary

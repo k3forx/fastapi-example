@@ -1,6 +1,0 @@
-resources:
-  - deployment.yaml
-  - service.yaml
-
-commonLabels:
-  app: prometheus

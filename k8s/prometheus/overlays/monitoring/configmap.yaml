@@ -13,4 +13,4 @@ data:
     scrape_configs:
       - job_name: fast-api
         static_configs:
-          - targets: ["fast-api:9999"]
+          - targets: ["fast-api:8000"]

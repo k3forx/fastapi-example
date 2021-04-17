@@ -196,6 +196,10 @@ application.argoproj.io/api-app-fastapi created
 
 <img width="1920" alt="貼り付けた画像_2021_04_17_20_33" src="https://user-images.githubusercontent.com/45956169/115111652-45e16700-9fbc-11eb-8f9b-325ca3d02886.png">
 
+## Monitoring
+
+You can monitor the application by Prometheuse. The application expose the endpoint (`/metrics`) for Prometheus. Also, the collected metrics can be shown with Grafana. You can follow the instruction in README in each directory.
+
 ## How to update the image?
 
 ```bash

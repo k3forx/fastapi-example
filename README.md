@@ -4,10 +4,15 @@
 
 This application is a REST API application with `FastAPI` framework and it exposes the following endpoints.
 
-- `/ping`
-- `/notes/{id}` (`GET` request)
+| Endpoint      | Method   | Response |
+| ------------- | -------- | -------- |
+| `/ping`       | `GET`    |          |
+| `/notes/{id}` | `GET`    |          |
+| `/notes`      | `POST`   |          |
+| `/notes/{id}` | `PUT`    |          |
+| `/notes/{id}` | `DELETE` |          |
 
-You can check the above endpoints with Docker or Kubernetes.
+All endponts excepts `GET` method are NOT implemented yet. You can check the endpoints with Docker or Kubernetes.
 
 ## TODO
 
@@ -18,6 +23,7 @@ You can check the above endpoints with Docker or Kubernetes.
 - [ ] The application can accept `PUT` request
 - [ ] The application can accept `DELETE` request
 - [ ] Unify the way of logging
+- [ ] Introduce ORM
 
 ### MySQL
 

@@ -1,0 +1,32 @@
+name: linter
+
+on:
+  pull_request:
+    paths-ignore:
+      - ".*"
+      - "*/.*"
+      - "**Dockerfile"
+      - "**.txt"
+      - "**.png"
+      - "**.sql"
+
+jobs:
+  lint:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.lint.txt
+      - name: isort
+        run: isort --check-only .
+      - name: black
+        run: black --check .
+      - name: flake8
+        run: flake8 .
+      - name: mypy
+        run: find . -name "*.py" -and -not -path  "*test*" | xargs mypy

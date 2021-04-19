@@ -1,16 +1,17 @@
-# import unittest
-# from fastapi.testclient import TestClient
-# from app.main import app
+import unittest
 
-# client = TestClient(app)
+from app.main import app
+from fastapi.testclient import TestClient
 
-
-# class TestPingAPI(unittest.TestCase):
-#     def test_get_ping(self):
-#         response = client.get("/ping")
-#         self.assertEqual(response.status_code, 200)
-#         self.assertEqual(response.json(), {"ping": "pong!"})
+client = TestClient(app)
 
 
-# if __name__ == "__main__":
-#     unittest.main()
+class TestPingAPI(unittest.TestCase):
+    def test_get_ping(self):
+        response = client.get("/ping")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"ping": "pong!"})
+
+
+if __name__ == "__main__":
+    unittest.main()

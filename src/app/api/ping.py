@@ -1,8 +1,8 @@
-# from fastapi import APIRouter
+from fastapi import APIRouter
 
-# router = APIRouter()
+router = APIRouter()
 
 
-# @router.get("/ping")
-# def pong():
-#     return {"ping": "pong!"}
+@router.get("/ping")
+def pong():
+    return {"ping": "pong!"}

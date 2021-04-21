@@ -5,6 +5,7 @@ on:
     paths:
       - ".github/workflows/integration-test.yaml"
       - "src/**"
+      - "integration_test/**"
       - "docker-compose.yaml"
       - "db/*.sql"
       - "!**/*.md"

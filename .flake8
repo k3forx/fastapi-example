@@ -1,0 +1,8 @@
+[flake8]
+max-line-length = 120
+exclude =
+    # flake8 for tests are excluded as docstrings are not needed
+    */test_*
+    unit_tests/*
+    lib
+ignore = W504,E203,D

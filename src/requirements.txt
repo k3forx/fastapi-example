@@ -2,3 +2,4 @@ fastapi==0.63.0
 uvicorn==0.13.4
 PyMySQL==1.0.2
 starlette_exporter==0.7.0
+PyYAML==5.4.1

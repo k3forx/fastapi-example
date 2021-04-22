@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   mysql:
@@ -13,7 +13,7 @@ services:
     ports:
       - "3306:3306"
     healthcheck:
-      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 10s
       retries: 5
     volumes:
@@ -25,13 +25,13 @@ services:
     depends_on:
       - mysql
     container_name: fastapi
-    command: sh -c "sleep 10; uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000"
+    command: sh -c "sleep 10; uvicorn app.main:app --reload --host 0.0.0.0 --port 8000 --log-config ./log_config.yaml"
     volumes:
       - ./src:/usr/src/app/
       - ./integration_test:/usr/src/
     ports:
       - 8002:8000
-    environment:  # TODO: Bundle them into a file
+    environment: # TODO: Bundle them into a file
       MYSQL_HOST: mysql
       MYSQL_DATABASE: test
       MYSQL_USER: mysql

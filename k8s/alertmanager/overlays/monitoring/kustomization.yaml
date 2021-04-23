@@ -1,0 +1,10 @@
+namespace: monitoring
+
+bases:
+  - ../../base
+
+patchesStrategicMerge:
+  - deployment.yaml
+
+resources:
+  - configmap.yaml

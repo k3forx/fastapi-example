@@ -43,19 +43,19 @@ All endponts excepts `GET` method are NOT implemented yet. You can check the end
 You can test the applicaion in your local with docker.
 
 ```bash
-> docker-compose up -d --build
+docker-compose up -d --build
 ```
 
 After containers successfully run, you can check an endpoint with `curl` command
 
 ```bash
-> curl localhost:8002/ping
+curl localhost:8002/ping
 {"ping":"pong!"}%
 
-> curl localhost:8002/notes/1/
+curl localhost:8002/notes/1/
 {"id":1,"title":"Beyond the legacy code","description":"Awesome book!"}%
 
-> curl localhost:8002/notes/2/
+curl localhost:8002/notes/2/
 {"detail":"Note not found"}%
 ```
 
@@ -66,19 +66,19 @@ There are workflows for each tests (unit test and integration test). These workf
 ### Unit test
 
 ```bash
-> cd src
+cd src
 
-> green unit_tests -vvv --run-coverage
+green unit_tests -vvv --run-coverage
 ```
 
 ### Integration test
 
 ```bash
-> docker-compose up -d
+docker-compose up -d
 
-> chmod +x check-api-endpoints.sh
+chmod +x check-api-endpoints.sh
 
-> bash check-api-endpoints.sh
+bash check-api-endpoints.sh
 ```
 
 ## Deploy on Kubernetes
@@ -92,31 +92,17 @@ You can deploy the application on Kubernetes by manual apply or Argo CD
 First, you need to run MySQL container by statefulset.
 
 ```bash
-> kubectl create ns database
-namespace/database created
+kubectl create ns database
 
-> kubectl apply -k k8s/mysql/overlays/database
-configmap/entrypoint-fgtb28gb95 created
-configmap/mycnf-m7dfc72fd9 created
-secret/mysql-secret created
-service/mysql-headless created
-statefulset.apps/mysql created
+kubectl apply -k k8s/mysql/overlays/database
 
-> kubectl get all -n database
-NAME          READY   STATUS    RESTARTS   AGE
-pod/mysql-0   1/1     Running   0          33s
-
-NAME                     TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE
-service/mysql-headless   ClusterIP   None         <none>        3306/TCP   33s
-
-NAME                     READY   AGE
-statefulset.apps/mysql   1/1     33s
+kubectl get all -n database
 ```
 
 You can login the database `test` with the following command.
 
 ```bash
-> kubectl exec -it mysql-0 -n database -- mysql -uroot -p$(kubectl get secret -n database  mysql-secret -o yaml | grep MYSQL_ROOT_PASSWORD | sed 's/.*.: \(.*\)/\1/' | base64 --decode) test
+kubectl exec -it mysql-0 -n database -- mysql -uroot -p$(kubectl get secret -n database  mysql-secret -o yaml | grep MYSQL_ROOT_PASSWORD | sed 's/.*.: \(.*\)/\1/' | base64 --decode) test
 ```
 
 #### Deploy the application
@@ -124,22 +110,13 @@ You can login the database `test` with the following command.
 After, you successfully deploy MySQL container, then you can deploy the application.
 
 ```bash
-> kubectl create ns api-app
-namespace/api-app created
+kubectl create ns api-app
 
-> kubectl apply -k k8s/fastapi/overlays/api-app/
-configmap/fastapi-configmap-dctbbf26g5 created
-secret/fastapi-secret created
-service/fastapi created
-deployment.apps/fastapi created
+kubectl apply -k k8s/fastapi/overlays/api-app/
 
-> kubectl get pod -n api-app
-NAME                       READY   STATUS    RESTARTS   AGE
-fastapi-6c4f4bb67f-bvhdp   1/1     Running   0          28s
-fastapi-6c4f4bb67f-hq7qq   1/1     Running   0          28s
-fastapi-6c4f4bb67f-wbhzp   1/1     Running   0          28s
+kubectl get pod -n api-app
 
-> kubectl run --restart Never --image curlimages/curl:7.68.0 -it --rm curl sh
+kubectl run --restart Never --image curlimages/curl:7.68.0 -it --rm curl sh
 If you don't see a command prompt, try pressing enter.
 / $ curl fastapi.api-app.svc.cluster.local:8000/ping
 {"ping":"pong!"}/ $ curl fastapi.api-app.svc.cluster.local:8000/notes/1/
@@ -154,15 +131,11 @@ The following instructions may work only when you use `minikube` as Kubernetes c
 #### Set up Argo CD
 
 ```bash
-> kubectl apply -f argocd/setup/namespace.yaml
-namespace/argocd created
+kubectl apply -f argocd/setup/namespace.yaml
 
-> kubectl get ns | grep argocd
-argocd              Active   56s
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-> kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-
-> kubectl port-forward svc/argocd-server -n argocd 8080:443
+kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
 
 You can see the console with `localhost:8080`.
@@ -172,7 +145,7 @@ You can see the console with `localhost:8080`.
 Get login password by the following command.
 
 ```bash
-> kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ```
 
 You can login Argo CD with username `admin` and the password you got.
@@ -180,21 +153,17 @@ You can login Argo CD with username `admin` and the password you got.
 #### Create a project and an application
 
 ```bash
-> kubectl create ns database
+kubectl create ns database
 
-> kubectl apply -f argocd/projects/database/project.yaml
-appproject.argoproj.io/database created
+kubectl apply -f argocd/projects/database/project.yaml
 
-> kubectl apply -f argocd/projects/database/mysql.yaml
-application.argoproj.io/database-mysql created
+kubectl apply -f argocd/projects/database/mysql.yaml
 
-> kubectl create ns api-app
+kubectl create ns api-app
 
-> kubectl apply -f argocd/projects/api-app/project.yaml
-appproject.argoproj.io/api-app created
+kubectl apply -f argocd/projects/api-app/project.yaml
 
-> kubectl apply -f argocd/projects/api-app/fastapi.yaml
-application.argoproj.io/api-app-fastapi created
+kubectl apply -f argocd/projects/api-app/fastapi.yaml
 ```
 
 #### Check the status of the applications on UI
@@ -208,9 +177,9 @@ You can monitor the application by Prometheuse. The application expose the endpo
 ## How to update the image?
 
 ```bash
-> docker login
+docker login
 
-> docker build src/ -t kanata333/fastapi-example:v<version tag>
+docker build src/ -t kanata333/fastapi-example:v<version tag>
 
-> docker push kanata333/fastapi-example:v<version tag>
+docker push kanata333/fastapi-example:v<version tag>
 ```

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+data:
+  alertmanager.yml: |-
+    route:
+      receiver: 'containers_notification'
+    receivers:
+    - name: 'containers_notification'
+      slack_configs:
+        - api_url: '<example url>'
+          channel: '#alert-test'
+          text: "{{ .CommonAnnotations.summary }}"
+          send_resolved: true

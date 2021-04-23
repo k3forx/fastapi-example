@@ -3,4 +3,4 @@ resources:
   - service.yaml
 
 commonLabels:
-  app: alert-manager
+  app: alertmanager

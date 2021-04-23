@@ -1,13 +1,13 @@
 # Prometheus
 
-With prometheus and Grafana, you can monitor the application.
+With prometheus and Grafana and alert manager, you can monitor the application.
 
 ## Set up Promtheus
 
 If you use minikube as Kubernetes cluster, you need to launch it with the following parameters so that prometheuse-server can collect metrics of the application.
 
 ```bash
-> minikube start --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook
+minikube start --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook
 ```
 
 ## Deploy
@@ -15,7 +15,7 @@ If you use minikube as Kubernetes cluster, you need to launch it with the follow
 You can deploy Prometheus manually or use Argo CD. Before you deploy it, you need to create namaspace `monitoring` beforehand.
 
 ```bash
-> kubectl create ns monitoring
+kubectl create ns monitoring
 ```
 
 ### Deploy by manual
@@ -25,9 +25,9 @@ You can deploy Prometheus manually or use Argo CD. Before you deploy it, you nee
 You can also use Argo CD to deploy Prometheus.
 
 ```bash
-> kubectl apply -f argocd/projects/monitoring/project.yaml
+kubectl apply -f argocd/projects/monitoring/project.yaml
 
-> kubectl apply -f argocd/projects/monitoring/prometheus.yaml
+kubectl apply -f argocd/projects/monitoring/prometheus.yaml
 ```
 
 ## Check the status of applications
@@ -35,7 +35,7 @@ You can also use Argo CD to deploy Prometheus.
 You can check the status of the application by `kubectl` command or Argo CD UI.
 
 ```bash
-> kubectl get all -n monitoring
+kubectl get all -n monitoring
 NAME                              READY   STATUS    RESTARTS   AGE
 pod/prometheus-575865f89f-rkc4v   1/1     Running   0          31m
 
@@ -58,7 +58,7 @@ Argo CD
 The type of the service for prometheus-server is `NodePort`. Then you can open the console of prometheus with the following command.
 
 ```bash
-> minikube service prometheus -n monitoring --url
+minikube service prometheus -n monitoring --url
 ```
 
 You can visit the console with the above URL you got.
@@ -69,15 +69,50 @@ Also, you can check that Prometheus can pull metrics from the application on the
 
 ![image](https://user-images.githubusercontent.com/45956169/115111520-c05db700-9fbb-11eb-8c86-acc58e4c28d6.png)
 
-# About Prometheus
+## Deploy Alert Manager
 
-The following sections are for Prometheus.
+After you confirm that Prometheus can collect the metrics, you can set alerts based on the changes of the status of the application.
 
-## Concepts
+By default, the following alert is set.
 
-## Type of metrics
+```YAML
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+data:
+  alertmanager.yml: |-
+    route:
+      receiver: 'containers_notification'
+    receivers:
+    - name: 'containers_notification'
+      slack_configs:
+        - api_url: '<webhook-url>'
+          channel: '<channel name>'
+          text: "{{ .CommonAnnotations.summary }}"
+          send_resolved: true
+```
 
-- Counter
-- Gauge
-- Histogram
-- Summary
+When the application is down, an alert will be sent to the slack channel with incoming webhook.
+
+You can deploy alert manager with the following command after you update the above YAML file.
+
+```bash
+kubectl apply -k k8s/alertmanager/overlays/monitoring
+```
+
+## Trigger an alert
+
+```bash
+kubectl delete -k k8s/fastapi/overlays/api-app/
+```
+
+or
+
+```bash
+kubectl delete -f argocd/projects/api-app/fastapi.yaml
+```
+
+## Check the slack channel
+
+![image](https://user-images.githubusercontent.com/45956169/115889152-a37b2500-a48e-11eb-9739-75befd1b6c40.png)

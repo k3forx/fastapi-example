@@ -9,7 +9,7 @@ data:
     receivers:
     - name: 'containers_notification'
       slack_configs:
-        - api_url: '<example url>'
+        - api_url: '<webhook url>'
           channel: '#alert-test'
           text: "{{ .CommonAnnotations.summary }}"
           send_resolved: true

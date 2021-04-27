@@ -12,4 +12,4 @@ spec:
     matchLabels:
       app: fastapi
   endpoints:
-    - port: api
+    - targetPort: 8000

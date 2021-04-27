@@ -6,7 +6,8 @@ metadata:
     app: fastapi
 spec:
   namespaceSelector:
-    matchNames: api-app
+    matchNames:
+      - api-app
   selector:
     matchLabels:
       app: fastapi

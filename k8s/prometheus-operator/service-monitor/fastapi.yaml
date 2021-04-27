@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: fastapi
+  labels:
+    app: fastapi
+spec:
+  namespaceSelector:
+    matchNames: api-app
+  selector:
+    matchLabels:
+      app: fastapi
+  endpoints:
+    - port: api

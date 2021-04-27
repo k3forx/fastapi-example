@@ -1,0 +1,8 @@
+namespace: monitoring
+
+resources:
+  - v0.47.0/bundle.yaml
+  - rbac.yaml
+  - prometheus.yaml
+  - service.yaml
+  - service-monitor/fastapi.yaml

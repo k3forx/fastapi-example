@@ -1,5 +1,7 @@
 namespace: database
+
 bases:
   - ../../base
+
 resources:
-  - secret.yaml
+  - sealed-secret.yaml

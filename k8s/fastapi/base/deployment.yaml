@@ -15,20 +15,13 @@ spec:
         app: fastapi
     spec:
       containers:
-      - name: fastapi
-        image: kanata333/fastapi-example:v1.1.0
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 8000
-        envFrom:
-        - configMapRef:
-            name: fastapi-configmap
-        - secretRef:
-            name: fastapi-secret
-        # volumeMounts:
-        # - name: config
-        #   mountPath: /config
-      # volumes:
-      # - name: config
-        # configMap:
-        #   name: gram-store-clean-up-configmap
+        - name: fastapi
+          image: kanata333/fastapi-example:v1.1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: fastapi-configmap
+            - secretRef:
+                name: fastapi-secret

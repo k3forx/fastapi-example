@@ -24,11 +24,10 @@ jobs:
         run: |
           for i in `seq 1 30`;
           do
-            curl -X GET -L http://localhost:8002/metrics && exit 0
+            curl -X GET -L http://localhost:8000/metrics && exit 0
             sleep 5
           done
 
       - name: Check endpoints
         run: |
-          chmod +x check-api-endpoints.sh
           ./check-api-endpoints.sh

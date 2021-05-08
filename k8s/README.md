@@ -116,3 +116,8 @@ kubectl delete -f argocd/projects/api-app/fastapi.yaml
 ## Check the slack channel
 
 ![image](https://user-images.githubusercontent.com/45956169/115889152-a37b2500-a48e-11eb-9739-75befd1b6c40.png)
+
+## Prometheus Operator
+
+- prometheus operator による prometheus の管理では、kubernetes_sd_config で role に対するサービスディスカバリが実行される。
+- その後にラベルセレクタによるターゲットの選定が行われる。

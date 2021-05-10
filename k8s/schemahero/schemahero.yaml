@@ -3,7 +3,6 @@ kind: Service
 metadata:
   creationTimestamp: null
   name: controller-manager-service
-  namespace: schemahero-system
 spec:
   ports:
     - port: 443
@@ -19,7 +18,6 @@ kind: Secret
 metadata:
   creationTimestamp: null
   name: webhook-server-secret
-  namespace: schemahero-system
 
 ---
 apiVersion: apps/v1
@@ -29,7 +27,6 @@ metadata:
   labels:
     control-plane: schemahero
   name: schemahero
-  namespace: schemahero-system
 spec:
   selector:
     matchLabels:
@@ -3080,4 +3077,3 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: default
-    namespace: schemahero-system

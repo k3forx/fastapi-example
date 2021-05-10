@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: schemahero-system
+  namespace: argocd
+spec:
+  description: schemahero-system
+
+  sourceRepos:
+    - "*"
+
+  destinations:
+    - namespace: schemahero-system
+      server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+
+  namespaceResourceBlacklist:
+    - group: ""
+      kind: ResourceQuota
+    - group: ""
+      kind: LimitRange
+    - group: ""
+      kind: NetworkPolicy
+
+  orphanedResources:
+    warn: false

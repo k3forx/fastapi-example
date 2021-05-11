@@ -4,4 +4,4 @@ bases:
   - ../../base
 
 resources:
-  - sealed-secret.yaml
+  - secret.yaml

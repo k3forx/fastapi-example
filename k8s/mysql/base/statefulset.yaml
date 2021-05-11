@@ -7,22 +7,6 @@ spec:
   replicas: 1
   template:
     spec:
-      initContainers:
-        - name: "init-mysql"
-          image: "nginx:alpine"
-          command:
-            - sh
-            - -c
-            - |
-              cp /tmp/init/* /docker-entrypoint-initdb.d
-              # envsubst < /tmp/init/3_grant.sql > /docker-entrypoint-initdb.d/3_grant.sql
-          volumeMounts:
-            - name: mysql-storage
-              mountPath: /var/lib/mysql
-            - name: entrypoint
-              mountPath: /tmp/init
-            - name: sql-init
-              mountPath: /docker-entrypoint-initdb.d
       containers:
         - name: mysql
           imagePullPolicy: IfNotPresent
@@ -32,22 +16,6 @@ spec:
           envFrom:
             - secretRef:
                 name: mysql-secret
-          volumeMounts:
-            - name: mysql-storage
-              mountPath: /var/lib/mysql
-            - name: entrypoint
-              mountPath: /tmp/init
-            - name: sql-init
-              mountPath: /docker-entrypoint-initdb.d
-      volumes:
-        - name: sql-init
-          emptyDir: {}
-        - name: mycnf
-          configMap:
-            name: mycnf
-        - name: entrypoint
-          configMap:
-            name: entrypoint
   volumeClaimTemplates:
     - metadata:
         name: mysql-storage

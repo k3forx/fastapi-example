@@ -1,0 +1,9 @@
+apiVersion: databases.schemahero.io/v1alpha4
+kind: Database
+metadata:
+  name: test
+spec:
+  connection:
+    mysql:
+      uri:
+        value: mysql:root@tcp(mysql-0.mysql-headless.database.svc.cluster.local:3306)/test?tls=false

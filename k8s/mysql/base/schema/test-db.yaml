@@ -6,4 +6,4 @@ spec:
   connection:
     mysql:
       uri:
-        value: mysql:root@tcp(mysql-0.mysql-headless.database.svc.cluster.local:3306)/test?tls=false
+        value: mysql:mysql@tcp(mysql-0.mysql-headless.database.svc.cluster.local:3306)/test?tls=false

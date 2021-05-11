@@ -2,6 +2,7 @@ resources:
   - statefulset.yaml
   - service.yaml
   - schema/test-db.yaml
+  - schema/notes-table.yaml
 
 commonLabels:
   app: mysql

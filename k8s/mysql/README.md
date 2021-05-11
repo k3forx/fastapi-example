@@ -7,3 +7,5 @@ kubectl create secret generic mysql-secret -n database --from-literal=<KEY>=<VAL
 ```bash
 kubeseal -o yaml < k8s/mysql/overlays/database/secret.yaml > k8s/mysql/overlays/database/sealed-secret.yaml
 ```
+
+# Schema management with SchemaHero

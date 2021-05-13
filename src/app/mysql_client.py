@@ -1,7 +1,9 @@
-from typing import Any, Dict
 from os import getenv
-from app.utils import get_logger
+from typing import Any, Dict
+
 import pymysql
+
+from app.utils import get_logger
 
 logger = get_logger()
 
@@ -25,6 +27,20 @@ class MySQLClient:
             logger.error(f"Error occurred while executing query: {e}")
             raise e
 
+    def execute_commit_query(self, query: str) -> Any:
+        self.__make_connection_to_db()
+        try:
+            logger.info("Executing query...")
+            with self.__db_connection.cursor() as cursor:
+                cursor.execute(query)
+                self.__commit()
+                logger.info("Successfully committed")
+                return
+        except Exception as e:
+            self.__close_connection()
+            logger.error(f"Error occurred while commting query: {e}")
+            raise e
+
     def __make_connection_to_db(self) -> None:
         if self.__is_connection_alive:
             logger.info("Connection is alive")
@@ -39,6 +55,9 @@ class MySQLClient:
             except Exception as e:
                 logger.error(f"Error occurred while executing query: {e}")
                 raise e
+
+    def __commit(self) -> None:
+        self.__db_connection.commit()
 
     def __close_connection(self) -> None:
         self.__db_connection.close()

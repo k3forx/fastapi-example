@@ -30,7 +30,7 @@ services:
       - ./src:/usr/src/app/
       - ./integration_test:/usr/src/
     ports:
-      - 8002:8000
+      - 8000:8000
     environment: # TODO: Bundle them into a file
       MYSQL_HOST: mysql
       MYSQL_DATABASE: test

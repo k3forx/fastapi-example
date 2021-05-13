@@ -14,30 +14,6 @@ This application is a REST API application with `FastAPI` framework and it expos
 
 All endponts excepts `GET` method are NOT implemented yet. You can check the endpoints with Docker or Kubernetes.
 
-## TODO
-
-### The application
-
-- [x] The application can communicate with MySQL container
-- [ ] The application can accept `POST` request
-- [ ] The application can accept `PUT` request
-- [ ] The application can accept `DELETE` request
-- [ ] Unify the way of logging
-- [ ] Introduce ORM
-
-### MySQL
-
-- [x] Launch MySQL container with Kubernetes
-- [ ] Create MySQL user when the container is initialized
-
-### Others
-
-- [x] Introduce Argo CD in local
-- [ ] Expose Argo CD with service
-- [x] Introduce Prometheus
-- [x] Introduce Grafana
-- [ ] Introduce ELK
-
 ## Run in local
 
 You can test the applicaion in your local with docker.
@@ -49,14 +25,14 @@ docker-compose up -d --build
 After containers successfully run, you can check an endpoint with `curl` command
 
 ```bash
-curl localhost:8002/ping
-{"ping":"pong!"}%
+curl localhost:8000/ping
+{"ping":"pong!"}
 
-curl localhost:8002/notes/1/
-{"id":1,"title":"Beyond the legacy code","description":"Awesome book!"}%
+curl localhost:8000/notes/1/
+{"id":1,"title":"Beyond the legacy code","description":"Awesome book!"}
 
-curl localhost:8002/notes/2/
-{"detail":"Note not found"}%
+curl localhost:8000/notes/2/
+{"detail":"Note not found"}
 ```
 
 ## Test in local
@@ -68,15 +44,13 @@ There are workflows for each tests (unit test and integration test). These workf
 ```bash
 cd src
 
-green unit_tests -vvv --run-coverage
+pytest -v --cov --cov-report=term-missing unit_tests/
 ```
 
 ### Integration test
 
 ```bash
 docker-compose up -d
-
-chmod +x check-api-endpoints.sh
 
 bash check-api-endpoints.sh
 ```

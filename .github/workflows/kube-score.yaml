@@ -1,0 +1,45 @@
+name: kube-score
+
+on:
+  pull_request:
+    paths:
+      - "k8s/**/*.yaml"
+
+jobs:
+  kube-score:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up kubectl command
+        run: |
+          curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/linux/amd64/kubectl
+          chmod +x ./kubectl
+          sudo mv ./kubectl /usr/local/bin/kubectl
+          kubectl version --client
+
+      - name: Set up kube score command
+        run: |
+          wget https://github.com/zegl/kube-score/releases/download/v1.11.0/kube-score_1.11.0_linux_amd64.tar.gz
+          tar xvzf kube-score_1.11.0_linux_amd64.tar.gz
+          chmod +x ./kube-score
+          sudo mv ./kube-score /usr/local/bin/kube-score
+          kube-score version
+
+      - name: Perform static check
+        run: |
+          touch check-result.txt
+          TARGET_DIRS=$(find . | grep ".overlays/.*/kustomization.yaml" | sed 's%kustomization.yaml%%' | grep -ve prometheus -ve grafana -ve alertmanager) # Remove applications for monitoring
+          for DIR in $TARGET_DIRS; do
+            echo "Check Kubernetes manifest files in" $DIR
+            bash ./.github/actions/calculate-kube-scores.sh $DIR >> check-result.txt
+          done;
+
+      - name: Show check result
+        run: |
+          TOTAL_CRITICAL_ISSUE_NUM=$(cat check-result.txt | grep CRITICAL | wc -l)
+          echo "TOTAL_CRITICAL_ISSUE_NUM:" $TOTAL_CRITICAL_ISSUE_NUM
+          if [[ "$TOTAL_CRITICAL_ISSUE_NUM" != 0 ]]; then
+            cat check-result.txt
+            exit 1
+          fi

@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: fastapi
-          image: kanata333/fastapi-example:v1.1.0
-          imagePullPolicy: IfNotPresent
+          image: kanata333/fastapi-example:v1.5.0
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
           envFrom:
@@ -25,3 +25,25 @@ spec:
                 name: fastapi-configmap
             - secretRef:
                 name: fastapi-secret
+          resources:
+            limits:
+              memory: "150Mi"
+              cpu: "200m"
+            requests:
+              memory: "100Mi"
+              cpu: "200m"
+          securityContext:
+            runAsGroup: 11211
+            runAsUser: 11211
+            readOnlyRootFilesystem: true
+          readinessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            httpGet:
+              path: /health
+              port: 8000
+          livenessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 15
+            tcpSocket:
+              port: 8000

@@ -1,6 +1,7 @@
 resources:
   - deployment.yaml
   - service.yaml
+  - pod-disruption-budget.yaml
 
 commonLabels:
   app: fastapi

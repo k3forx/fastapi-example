@@ -41,6 +41,9 @@ class MySQLClient:
             logger.error(f"Error occurred while commting query: {e}")
             raise e
 
+    def ping(self) -> None:
+        self.__make_connection_to_db()
+
     def __make_connection_to_db(self) -> None:
         if self.__is_connection_alive:
             logger.info("Connection is alive")
@@ -71,6 +74,7 @@ db_config = {
     "db": getenv("MYSQL_DATABASE"),
     "password": getenv("MYSQL_PASSWORD"),
     "charset": "utf8mb4",
+    "connect_timeout": int(getenv("MYSQL_CONNECT_TIMEOUT", 86400)),
 }
 
 mysql = MySQLClient(db_config)

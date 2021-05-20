@@ -39,6 +39,7 @@ services:
       MYSQL_USER: mysql
       MYSQL_PASSWORD: mysql
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_CONNECT_TIMEOUT: 86400 # one day
 networks:
   default:
     name: fastapi

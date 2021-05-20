@@ -7,6 +7,14 @@ normal_status = 200
 note_id = 1
 
 
+def test_health():
+    expected_result = {"is_healthy": "true"}
+    response = requests.get(BASE_ENDPOINT + "/health")
+
+    assert response.status_code == normal_status
+    assert response.json() == expected_result
+
+
 def test_GET_ping():
     path = "/ping"
 

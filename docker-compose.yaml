@@ -11,10 +11,11 @@ services:
       MYSQL_PASSWORD: mysql
       MYSQL_ROOT_PASSWORD: root
     ports:
-      - "3306:3306"
+      - 3306:3306
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 10s
+      interval: 5s
       retries: 5
     volumes:
       - ./db/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
@@ -23,9 +24,10 @@ services:
   fastapi:
     build: ./src
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     container_name: fastapi
-    command: sh -c "sleep 10; uvicorn app.main:app --reload --host 0.0.0.0 --port 8000 --log-config ./log_config.yaml"
+    command: sh -c "uvicorn app.main:app --reload --host 0.0.0.0 --port 8000 --log-config ./log_config.yaml"
     volumes:
       - ./src:/usr/src/app/
       - ./integration_test:/usr/src/

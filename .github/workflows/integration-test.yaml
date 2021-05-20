@@ -20,14 +20,5 @@ jobs:
       - name: Start docker containers
         run: docker-compose up -d
 
-      - name: Wait until the containers are ready
-        run: |
-          for i in `seq 1 30`;
-          do
-            curl -X GET -L http://localhost:8000/metrics && exit 0
-            sleep 5
-          done
-
       - name: Check endpoints
-        run: |
-          ./check-api-endpoints.sh
+        run: ./check-api-endpoints.sh

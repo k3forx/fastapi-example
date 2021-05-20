@@ -68,6 +68,28 @@ class TestNotesAPI(unittest.TestCase):
         self.assertEqual(response.status_code, 500)
         self.assertEqual(response.json(), expect_body)
 
+    @patch("app.api.notes.mysql")
+    def test_delete_note_by_id_without_error(self, mock_mysql):
+        note_id = 1
+        response = client.delete(f"/notes/{note_id}")
+        executed_query = f"DELETE FROM notes WHERE id = {note_id};"
+
+        expect_body = {"message": f"The note is deleted by id = {note_id}"}
+        mock_mysql.execute_commit_query.assert_called_once_with(executed_query)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), expect_body)
+
+    @patch("app.api.notes.mysql")
+    def test_delete_note_by_id_with_error(self, mock_mysql):
+        mock_mysql.execute_commit_query.side_effect = OperationalError
+        note_id = 1
+        response = client.delete(f"/notes/{note_id}")
+        executed_query = f"DELETE FROM notes WHERE id = {note_id};"
+
+        expect_body = {"detail": "Failed to delete"}
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.json(), expect_body)
+
 
 if __name__ == "__main__":
     unittest.main()

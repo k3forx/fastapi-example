@@ -44,3 +44,18 @@ def post_new_note(note: Note):
     except Exception as e:
         logger.error(f"Error occurred while creating a note: {e}")
         raise HTTPException(status_code=500, detail="Failed to be created")
+
+
+@router.delete("/{note_id}")
+def delete_note_by_note_id(note_id: int):
+    logger.info(f"Delete note by id: id = {note_id}")
+    query = f"DELETE FROM notes WHERE id = {note_id};"
+    try:
+        mysql.execute_commit_query(query)
+        return JSONResponse(
+            status_code=200,
+            content={"message": f"The note is deleted by id = {note_id}"},
+        )
+    except Exception as e:
+        logger.error(f"{e}: failed to delete note by id = {note_id}")
+        raise HTTPException(status_code=500, detail="Failed to delete")

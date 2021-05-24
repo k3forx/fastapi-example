@@ -4,8 +4,7 @@ on:
   pull_request:
     paths:
       - ".github/workflows/integration-test.yaml"
-      - "src/**"
-      - "integration_test/**"
+      - "app/**/*.py"
       - "docker-compose.yaml"
       - "db/*.sql"
       - "!**/*.md"

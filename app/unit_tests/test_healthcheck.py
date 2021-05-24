@@ -2,17 +2,16 @@ import json
 import unittest
 from unittest.mock import MagicMock, patch
 
-from fastapi.testclient import TestClient
-from pymysql import InternalError
-
-from app.main import app
 from fastapi import status
+from fastapi.testclient import TestClient
+from main import app
+from pymysql import InternalError
 
 client = TestClient(app)
 
 
 class TestNotesAPI(unittest.TestCase):
-    @patch("app.api.healthcheck.mysql")
+    @patch("api.healthcheck.mysql")
     def test_health(self, mock_mysql):
         response = client.get("/health")
 
@@ -20,7 +19,7 @@ class TestNotesAPI(unittest.TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), {"is_healthy": "true"})
 
-    @patch("app.api.healthcheck.mysql")
+    @patch("api.healthcheck.mysql")
     def test_health_with_error(self, mock_mysql):
         mock_mysql.ping.side_effect = InternalError
 

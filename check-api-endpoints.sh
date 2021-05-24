@@ -1,6 +1,6 @@
 #!/bin/bash
 
 set -e
-cd ./integration_test
-pip install -r requirements.txt
-pytest -v test_api_endpoints.py
+pip install -r ./app/requirements.test.txt
+echo "Start testing..."
+pytest -vv ./app/integration_test/test_api_endpoints.py

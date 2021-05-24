@@ -6,7 +6,7 @@ metadata:
     app: fastapi
 spec:
   containers:
-  - name: fastapi
-    image: kanata333/fastapi-example:v1.1.0
-    imagePullPolicy: Always
+    - name: fastapi
+      image: kanata333/fastapi-example:v1.1.0
+      imagePullPolicy: Always
   restartPolicy: Never

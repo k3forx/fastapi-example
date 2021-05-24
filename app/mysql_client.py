@@ -1,11 +1,10 @@
+from logging import getLogger
 from os import getenv
 from typing import Any, Dict
 
 import pymysql
 
-from app.utils import get_logger
-
-logger = get_logger()
+logger = getLogger(__name__)
 
 
 class MySQLClient:

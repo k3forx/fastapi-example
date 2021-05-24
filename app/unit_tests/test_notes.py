@@ -5,15 +5,14 @@ from unittest.mock import patch
 from fastapi import status
 from fastapi.responses import JSONResponse
 from fastapi.testclient import TestClient
+from main import app
 from pymysql.err import OperationalError
-
-from app.main import app
 
 client = TestClient(app)
 
 
 class TestNotesAPI(unittest.TestCase):
-    @patch("app.api.notes.mysql")
+    @patch("api.notes.mysql")
     def test_get_note_by_id_without_error(self, mock_mysql):
         mock_mysql.execute_fetch_query.return_value = [
             [
@@ -32,7 +31,7 @@ class TestNotesAPI(unittest.TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), expect)
 
-    @patch("app.api.notes.mysql")
+    @patch("api.notes.mysql")
     def test_get_note_by_id_with_error(self, mock_mysql):
         mock_mysql.execute_fetch_query.side_effect = OperationalError
         expect = {"message": "Note not found"}
@@ -40,13 +39,11 @@ class TestNotesAPI(unittest.TestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(response.json(), expect)
 
-    @patch("app.api.notes.mysql")
+    @patch("api.notes.mysql")
     def test_post_new_note_without_error(self, mock_mysql):
         dummy_title = "dummy title"
         dummy_description = "dummy description"
-        response = client.post(
-            "/notes", json={"title": dummy_title, "description": dummy_description}
-        )
+        response = client.post("/notes", json={"title": dummy_title, "description": dummy_description})
 
         expect_query = f"""INSERT INTO notes (title, description) VALUES ("{dummy_title}", "{dummy_description}");"""
         expect_body = {"message": "The new note is created successfully"}
@@ -54,14 +51,12 @@ class TestNotesAPI(unittest.TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), expect_body)
 
-    @patch("app.api.notes.mysql")
+    @patch("api.notes.mysql")
     def test_post_new_note_with_internal_error(self, mock_mysql):
         mock_mysql.execute_commit_query.side_effect = OperationalError
         dummy_title = "dummy title"
         dummy_description = "dummy description"
-        response = client.post(
-            "/notes", json={"title": dummy_title, "description": dummy_description}
-        )
+        response = client.post("/notes", json={"title": dummy_title, "description": dummy_description})
 
         expect_query = f"""INSERT INTO notes (title, description) VALUES ("{dummy_title}", "{dummy_description}");"""
         expect_body = {"message": "Failed to be created"}
@@ -69,7 +64,7 @@ class TestNotesAPI(unittest.TestCase):
         self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
         self.assertEqual(response.json(), expect_body)
 
-    @patch("app.api.notes.mysql")
+    @patch("api.notes.mysql")
     def test_delete_note_by_id_without_error(self, mock_mysql):
         note_id = 1
         response = client.delete(f"/notes/{note_id}")
@@ -80,7 +75,7 @@ class TestNotesAPI(unittest.TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), expect_body)
 
-    @patch("app.api.notes.mysql")
+    @patch("api.notes.mysql")
     def test_delete_note_by_id_with_error(self, mock_mysql):
         mock_mysql.execute_commit_query.side_effect = OperationalError
         note_id = 1

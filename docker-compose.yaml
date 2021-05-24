@@ -22,15 +22,17 @@ services:
       - ./db/data.sql:/docker-entrypoint-initdb.d/02_data.sql
 
   fastapi:
-    build: ./src
+    build: ./app
     depends_on:
       mysql:
         condition: service_healthy
     container_name: fastapi
-    command: sh -c "uvicorn app.main:app --reload --host 0.0.0.0 --port 8000 --log-config ./log_config.yaml"
+    command: uvicorn main:app --reload --host 0.0.0.0 --port 8000 --log-config log_config.json
     volumes:
-      - ./src:/usr/src/app/
-      - ./integration_test:/usr/src/
+      - ./app/main.py:/usr/src/main.py
+      - ./app/mysql_client.py:/usr/src/mysql_client.py
+      - ./app/api:/usr/src/api
+      - ./app/log_config.json:/usr/src/log_config.json
     ports:
       - 8000:8000
     environment: # TODO: Bundle them into a file

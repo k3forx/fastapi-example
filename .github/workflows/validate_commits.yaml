@@ -1,0 +1,41 @@
+name: validate_commits
+
+on:
+  pull_request:
+    paths-ignore:
+      - ".*" # hidden files in the root directory
+      - "*/.*" # hidden files in the 1st sub directory
+      - "**.txt"
+      - "**.pu" # UML file format
+      - "**.png"
+      - "**.cnf"
+      - "**.example"
+      - "**.sql"
+
+jobs:
+  lint:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.dev.txt
+          npm install prettier@2.2.1
+      - name: isort
+        run: isort --check-only .
+      - name: black
+        run: black --check .
+      - name: flake8
+        run: flake8 .
+      - name: mypy
+        run: find . -name "*.py" -and -not -path  "*test*" | xargs mypy
+      - name: prettier
+        run: npx prettier --check .
+      - name: shellcheck # pre-installed in ubuntu-20.04 of GitHub Host runnner
+        run: find . -type f -name "*.sh" | xargs shellcheck -e SC1091
+      - name: hadolint
+        run: find . -name Dockerfile | xargs -I{} bash -c "echo [INFO] checking {}; docker run --rm -i hadolint/hadolint:v2.1.0 < {}"

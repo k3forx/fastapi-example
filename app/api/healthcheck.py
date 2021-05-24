@@ -1,11 +1,11 @@
-from fastapi.responses import JSONResponse
+from logging import getLogger
 
-from app.mysql_client import mysql
-from app.utils import get_logger
 from fastapi import APIRouter, status
+from fastapi.responses import JSONResponse
+from mysql_client import mysql
 
 router = APIRouter()
-logger = get_logger()
+logger = getLogger(__name__)
 
 
 @router.get("/health")
@@ -13,9 +13,7 @@ def health_check():
     try:
         mysql.ping()
         logger.info("Application is healthy")
-        return JSONResponse(
-            status_code=status.HTTP_200_OK, content={"is_healthy": "true"}
-        )
+        return JSONResponse(status_code=status.HTTP_200_OK, content={"is_healthy": "true"})
     except Exception as e:
         logger.error(f"Application is not healthy: {e}")
         return JSONResponse(

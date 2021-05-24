@@ -7,23 +7,23 @@ spec:
   description: database
 
   sourceRepos:
-  - '*'
+    - "*"
 
   destinations:
-  - namespace: database
-    server: https://kubernetes.default.svc
+    - namespace: database
+      server: https://kubernetes.default.svc
 
   clusterResourceWhitelist:
-  - group: '*'
-    kind: '*'
+    - group: "*"
+      kind: "*"
 
   namespaceResourceBlacklist:
-  - group: ''
-    kind: ResourceQuota
-  - group: ''
-    kind: LimitRange
-  - group: ''
-    kind: NetworkPolicy
+    - group: ""
+      kind: ResourceQuota
+    - group: ""
+      kind: LimitRange
+    - group: ""
+      kind: NetworkPolicy
 
   orphanedResources:
     warn: false

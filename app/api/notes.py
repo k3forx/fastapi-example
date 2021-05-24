@@ -1,14 +1,13 @@
+from logging import getLogger
 from typing import Optional
 
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
+from mysql_client import mysql
 from pydantic import BaseModel
 
-from app.mysql_client import mysql
-from app.utils import get_logger
-
 router = APIRouter()
-logger = get_logger()
+logger = getLogger(__name__)
 
 
 class Note(BaseModel):
@@ -26,9 +25,7 @@ def get_note_by_id(note_id: int):
         return JSONResponse(status_code=status.HTTP_200_OK, content=response)
     except Exception as e:
         logger.error(f"Error happened: {e}")
-        return JSONResponse(
-            status_code=status.HTTP_404_NOT_FOUND, content={"message": "Note not found"}
-        )
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "Note not found"})
 
 
 @router.post("")

@@ -6,8 +6,8 @@ patchesStrategicMerge:
 configMapGenerator:
   - name: fastapi-configmap
     literals:
-    - MYSQL_HOST=mysql-0.mysql-headless.database.svc.cluster.local
-    - MYSQL_USER=root
-    - MYSQL_DATABASE=test
+      - MYSQL_HOST=mysql-0.mysql-headless.database.svc.cluster.local
+      - MYSQL_USER=root
+      - MYSQL_DATABASE=test
 resources:
-    - secret.yaml
+  - secret.yaml

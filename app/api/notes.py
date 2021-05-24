@@ -15,10 +15,10 @@ class Note(BaseModel):
     description: Optional[str] = None
 
 
-@router.get("/{note_id}")
-def get_note_by_id(note_id: int):
-    logger.info(f"Get note by id: id = {note_id}")
-    query = f"SELECT * FROM notes WHERE id = {note_id};"
+@router.get("")
+def get_note_by_id(id: str):
+    logger.info(f"Get note by id: id = {id}")
+    query = f"SELECT * FROM notes WHERE id = {id};"
     try:
         result = mysql.execute_fetch_query(query)[0]
         response = {"id": result[0], "title": result[1], "description": result[2]}

@@ -27,7 +27,7 @@ class TestNotesAPI(unittest.TestCase):
             "title": "Beyond the legacy code",
             "description": "Awesome book!",
         }
-        response = client.get("/notes/1")
+        response = client.get("/notes/?id=1")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), expect)
 
@@ -35,7 +35,7 @@ class TestNotesAPI(unittest.TestCase):
     def test_get_note_by_id_with_error(self, mock_mysql):
         mock_mysql.execute_fetch_query.side_effect = OperationalError
         expect = {"message": "Note not found"}
-        response = client.get("/notes/2")
+        response = client.get("/notes?id=2")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(response.json(), expect)
 

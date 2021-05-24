@@ -55,6 +55,27 @@ docker-compose up -d
 bash check-api-endpoints.sh
 ```
 
+## Frontend
+
+### Preparation
+
+```bash
+node --version
+v16.2.0
+
+npm --version
+7.13.0
+
+npm install -g @vue/cli
+npm install --save axios
+
+cd front
+
+npm run serve
+```
+
+### Check on UI
+
 ## Deploy on Kubernetes
 
 You can deploy the application on Kubernetes by manual apply or Argo CD

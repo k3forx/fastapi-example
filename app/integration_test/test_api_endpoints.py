@@ -26,7 +26,7 @@ def test_GET_ping():
 
 
 def test_GET_note_by_id():
-    path = f"/notes/?id=1"
+    path = f"/notes/1"
 
     expect_content = {
         "id": 1,

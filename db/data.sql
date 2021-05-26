@@ -3,4 +3,4 @@ INSERT INTO notes (
   description
 )
 VALUES
-  ("Beyond the legacy code", "Awesome book!");
+  ("Beyond the legacy code", "Awesome book!"), ("Effective Java", "Difficult...");

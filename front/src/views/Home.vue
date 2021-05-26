@@ -1,8 +1,8 @@
 <template>
-  <div class="hello">
+  <div class="home">
     <ul v-for="note in notes" :key="note.id">
       <li>
-        <router-link :to="{ name: 'Edit', params: { id: note.id } }">{{
+        <router-link :to="{ name: 'List', params: { id: note.id } }">{{
           note.title
         }}</router-link>
       </li>
@@ -14,7 +14,7 @@
 import axios from "axios";
 
 export default {
-  name: "HelloWorld",
+  name: "Home",
   data() {
     return {
       notes: null,

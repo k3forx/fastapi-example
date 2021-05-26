@@ -42,6 +42,16 @@ services:
       MYSQL_PASSWORD: mysql
       MYSQL_ROOT_PASSWORD: root
       MYSQL_CONNECT_TIMEOUT: 86400 # one day
+
+  front:
+    build: ./front
+    depends_on:
+      - fastapi
+    container_name: front
+    command: http-server dist
+    ports:
+      - 8080:8080
+
 networks:
   default:
     name: fastapi

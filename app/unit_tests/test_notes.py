@@ -13,21 +13,30 @@ client = TestClient(app)
 
 class TestNotesAPI(unittest.TestCase):
     @patch("api.notes.mysql")
-    def test_get_note_by_id_without_error(self, mock_mysql):
-        mock_mysql.execute_fetch_query.return_value = [
-            [
-                1,
-                "Beyond the legacy code",
-                "Awesome book!",
-                datetime(2021, 4, 14, 0, 14, 14),
+    def test_get_all_notes_without_error(self, mock_mysql):
+        mock_mysql.execute_fetch_query.return_value = (
+            (1, "Beyond the legacy code", "Awesome book!"),
+            (2, "Effective Java", "Difficult..."),
+        )
+        expect = {
+            "notes": [
+                {"id": 1, "title": "Beyond the legacy code", "description": "Awesome book!"},
+                {"id": 2, "title": "Effective Java", "description": "Difficult..."},
             ]
-        ]
+        }
+        response = client.get("/notes")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json(), expect)
+
+    @patch("api.notes.mysql")
+    def test_get_note_by_id_without_error(self, mock_mysql):
+        mock_mysql.execute_fetch_query.return_value = ((1, "Beyond the legacy code", "Awesome book!"),)
         expect = {
             "id": 1,
             "title": "Beyond the legacy code",
             "description": "Awesome book!",
         }
-        response = client.get("/notes/?id=1")
+        response = client.get("/notes/1")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), expect)
 
@@ -35,7 +44,7 @@ class TestNotesAPI(unittest.TestCase):
     def test_get_note_by_id_with_error(self, mock_mysql):
         mock_mysql.execute_fetch_query.side_effect = OperationalError
         expect = {"message": "Note not found"}
-        response = client.get("/notes?id=2")
+        response = client.get("/notes/2")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(response.json(), expect)
 

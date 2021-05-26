@@ -1,22 +1,8 @@
 # CRUD application with FastAPI
 
-## What can this application do?
-
-This application is a REST API application with `FastAPI` framework and it exposes the following endpoints.
-
-| Endpoint      | Method   | Response |
-| ------------- | -------- | -------- |
-| `/ping`       | `GET`    |          |
-| `/notes/{id}` | `GET`    |          |
-| `/notes`      | `POST`   |          |
-| `/notes/{id}` | `PUT`    |          |
-| `/notes/{id}` | `DELETE` |          |
-
-All endponts excepts `GET` method are NOT implemented yet. You can check the endpoints with Docker or Kubernetes.
-
 ## Run in local
 
-You can test the applicaion in your local with docker.
+You can test the application in your local with docker.
 
 ```bash
 docker-compose up -d --build
@@ -25,15 +11,26 @@ docker-compose up -d --build
 After containers successfully run, you can check an endpoint with `curl` command
 
 ```bash
-curl localhost:8000/ping
-{"ping":"pong!"}
-
-curl localhost:8000/notes/1/
-{"id":1,"title":"Beyond the legacy code","description":"Awesome book!"}
-
-curl localhost:8000/notes/2/
-{"detail":"Note not found"}
+curl -s localhost:8000/notes | jq -r
+{
+  "notes": [
+    {
+      "id": 1,
+      "title": "Beyond the legacy code",
+      "description": "Awesome book!"
+    },
+    {
+      "id": 2,
+      "title": "Effective Java",
+      "description": "Difficult..."
+    }
+  ]
+}
 ```
+
+You can also access the application with http://localhost:8000/note.
+
+![image](https://user-images.githubusercontent.com/45956169/119678655-a9dc3280-be7a-11eb-9db2-5593fee9b5b7.png)
 
 ## Test in local
 
@@ -57,7 +54,7 @@ bash check-api-endpoints.sh
 
 ## Frontend
 
-### Preparation
+### Requirements
 
 ```bash
 node --version
@@ -70,11 +67,9 @@ npm install -g @vue/cli
 npm install --save axios
 
 cd front
-
-npm run serve
+vue add @vue/router
+npm install vuex
 ```
-
-### Check on UI
 
 ## Deploy on Kubernetes
 

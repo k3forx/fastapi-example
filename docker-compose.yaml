@@ -20,6 +20,7 @@ services:
     volumes:
       - ./db/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
       - ./db/data.sql:/docker-entrypoint-initdb.d/02_data.sql
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
 
   fastapi:
     build: ./app

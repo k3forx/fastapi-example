@@ -42,7 +42,7 @@ def test_GET_note_by_id():
 def test_POST_note():
     payload = {
         "title": "Engineering Organization Theory",
-        "description": "Interasting book!",
+        "description": "興味深い本ですね",
     }
     expect_body = {"message": "The new note is created successfully"}
 

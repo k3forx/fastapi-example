@@ -1,7 +1,7 @@
 import json
 from logging.config import dictConfig
 
-from api import healthcheck, notes, ping
+from api import auth, healthcheck, notes, ping
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from starlette_exporter import PrometheusMiddleware, handle_metrics
@@ -28,3 +28,4 @@ app.add_route("/metrics", handle_metrics)
 app.include_router(ping.router)
 app.include_router(notes.router, prefix="/notes", tags=["notes"])
 app.include_router(healthcheck.router)
+app.include_router(auth.router)

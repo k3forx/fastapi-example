@@ -25,7 +25,7 @@ button {
 </style>
 
 <script>
-import axios from "axios";
+import Axios from "axios";
 
 export default {
   name: "new",
@@ -41,7 +41,13 @@ export default {
     save: function () {
       let title = this.memo.title;
       let description = this.memo.description;
-      console.log(title, description);
+      var axios = Axios.create({
+        headers: {
+          accept: "application/json",
+          Authorization: "Bearer " + this.$store.state.userModule.access_token,
+        },
+        responseType: "json",
+      });
       axios
         .post("http://127.0.0.1:8000/notes/", {
           title: title,

@@ -1,13 +1,25 @@
 import unittest
 from datetime import datetime
+from unittest import mock
 from unittest.mock import patch
 
+from api.auth import get_current_active_user
+from api.models import User
 from fastapi import status
 from fastapi.responses import JSONResponse
 from fastapi.testclient import TestClient
 from main import app
 from pymysql.err import OperationalError
 
+DUMMY_USER_ID = 1
+DUMMY_USERNAME = "John"
+
+
+def mock_get_current_active_user():
+    return User(**{"id": DUMMY_USER_ID, "username": DUMMY_USERNAME})
+
+
+app.dependency_overrides[get_current_active_user] = mock_get_current_active_user
 client = TestClient(app)
 
 
@@ -15,8 +27,8 @@ class TestNotesAPI(unittest.TestCase):
     @patch("api.notes.mysql")
     def test_get_all_notes_without_error(self, mock_mysql):
         mock_mysql.execute_fetch_query.return_value = (
-            (1, "Beyond the legacy code", "Awesome book!"),
-            (2, "Effective Java", "Difficult..."),
+            (1, 1, "Beyond the legacy code", "Awesome book!"),
+            (2, 1, "Effective Java", "Difficult..."),
         )
         expect = {
             "notes": [
@@ -30,7 +42,7 @@ class TestNotesAPI(unittest.TestCase):
 
     @patch("api.notes.mysql")
     def test_get_note_by_id_without_error(self, mock_mysql):
-        mock_mysql.execute_fetch_query.return_value = ((1, "Beyond the legacy code", "Awesome book!"),)
+        mock_mysql.execute_fetch_query.return_value = ((1, 1, "Beyond the legacy code", "Awesome book!"),)
         expect = {
             "id": 1,
             "title": "Beyond the legacy code",
@@ -54,7 +66,7 @@ class TestNotesAPI(unittest.TestCase):
         dummy_description = "dummy description"
         response = client.post("/notes", json={"title": dummy_title, "description": dummy_description})
 
-        expect_query = f"""INSERT INTO notes (title, description) VALUES ("{dummy_title}", "{dummy_description}");"""
+        expect_query = f"""INSERT INTO notes (user_id, title, description) VALUES ("{DUMMY_USER_ID}", "{dummy_title}", "{dummy_description}");"""
         expect_body = {"message": "The new note is created successfully"}
         mock_mysql.execute_commit_query.assert_called_once_with(expect_query)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -67,7 +79,7 @@ class TestNotesAPI(unittest.TestCase):
         dummy_description = "dummy description"
         response = client.post("/notes", json={"title": dummy_title, "description": dummy_description})
 
-        expect_query = f"""INSERT INTO notes (title, description) VALUES ("{dummy_title}", "{dummy_description}");"""
+        expect_query = f"""INSERT INTO notes (user_id, title, description) VALUES ("{DUMMY_USER_ID}", "{dummy_title}", "{dummy_description}");"""
         expect_body = {"message": "Failed to be created"}
         mock_mysql.execute_commit_query.assert_called_once_with(expect_query)
         self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -92,6 +104,7 @@ class TestNotesAPI(unittest.TestCase):
         executed_query = f"DELETE FROM notes WHERE id = {note_id};"
 
         expect_body = {"message": "Failed to delete"}
+        mock_mysql.execute_commit_query.assert_called_once_with(executed_query)
         self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
         self.assertEqual(response.json(), expect_body)
 

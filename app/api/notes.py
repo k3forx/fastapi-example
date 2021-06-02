@@ -1,27 +1,25 @@
 from logging import getLogger
-from typing import Optional
 
-from fastapi import APIRouter, status
+from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 from mysql_client import mysql
-from pydantic import BaseModel
+
+from .auth import get_current_active_user
+from .models import Note, User
 
 router = APIRouter()
 logger = getLogger(__name__)
 
 
-class Note(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-
-
 @router.get("")
-def get_all_notes():
+def get_all_notes(current_user: User = Depends(get_current_active_user)):
+    print(current_user)
+    logger.info(f"Current use is {current_user.username}")
     logger.info("Get all notes")
-    query = "SELECT * FROM notes;"
+    query = f"SELECT * FROM notes WHERE user_id = {current_user.id};"
     try:
         results = mysql.execute_fetch_query(query)
-        response_content = [{"id": result[0], "title": result[1], "description": result[2]} for result in results]
+        response_content = [{"id": result[0], "title": result[2], "description": result[3]} for result in results]
         return JSONResponse(status_code=status.HTTP_200_OK, content={"notes": response_content})
     except Exception as e:
         logger.error(f"Failed to get all notes: {e}")
@@ -34,7 +32,7 @@ def get_note_by_id(note_id: int):
     query = f"SELECT * FROM notes WHERE id = {note_id};"
     try:
         result = mysql.execute_fetch_query(query)[0]
-        response = {"id": result[0], "title": result[1], "description": result[2]}
+        response = {"id": result[0], "title": result[2], "description": result[3]}
         return JSONResponse(status_code=status.HTTP_200_OK, content=response)
     except Exception as e:
         logger.error(f"Error happened: {e}")
@@ -42,13 +40,14 @@ def get_note_by_id(note_id: int):
 
 
 @router.post("")
-def post_new_note(note: Note):
+def post_new_note(note: Note, current_user: User = Depends(get_current_active_user)):
     note_dict = note.dict()
     logger.info(f"Create a new note: {note_dict}")
     try:
+        user_id = current_user.id
         title = note_dict["title"]
         description = note_dict["description"]
-        query = f"""INSERT INTO notes (title, description) VALUES ("{title}", "{description}");"""
+        query = f"""INSERT INTO notes (user_id, title, description) VALUES ("{user_id}", "{title}", "{description}");"""
         mysql.execute_commit_query(query)
         return JSONResponse(
             status_code=status.HTTP_200_OK,

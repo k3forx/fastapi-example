@@ -6,7 +6,7 @@ services:
     container_name: mysql
     environment:
       MYSQL_HOST: mysql
-      MYSQL_DATABASE: test
+      MYSQL_DATABASE: note-app
       MYSQL_USER: mysql
       MYSQL_PASSWORD: mysql
       MYSQL_ROOT_PASSWORD: root
@@ -38,7 +38,7 @@ services:
       - 8000:8000
     environment: # TODO: Bundle them into a file
       MYSQL_HOST: mysql
-      MYSQL_DATABASE: test
+      MYSQL_DATABASE: note-app
       MYSQL_USER: mysql
       MYSQL_PASSWORD: mysql
       MYSQL_ROOT_PASSWORD: root

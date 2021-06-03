@@ -25,10 +25,8 @@ export default {
   },
   created: function () {
     let id = this.$route.params["id"];
-    console.log(this.$notes);
     axios.get("http://127.0.0.1:8000/notes/" + id).then((response) => {
       this.result = response.data;
-      console.log(response);
     });
   },
   methods: {

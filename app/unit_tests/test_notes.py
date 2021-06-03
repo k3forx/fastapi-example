@@ -1,12 +1,9 @@
 import unittest
-from datetime import datetime
-from unittest import mock
 from unittest.mock import patch
 
 from api.auth import get_current_active_user
 from api.models import User
 from fastapi import status
-from fastapi.responses import JSONResponse
 from fastapi.testclient import TestClient
 from main import app
 from pymysql.err import OperationalError

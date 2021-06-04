@@ -33,14 +33,6 @@ def get_password_hash(password):
     return pwd_context.hash(password)
 
 
-def get_all_usernames():
-    usernames = []
-    query = "SELECT username FROM users;"
-    users = mysql.execute_fetch_query(query)
-    for user in users:
-        usernames = usernames + list(user[0])
-
-
 def get_user(username: str):
     query = f"SELECT * FROM users WHERE username = '{username}';"
     user_info = mysql.execute_fetch_query(query)[0]
@@ -137,13 +129,3 @@ async def register_new_user(register_user: UserBeforeRegister):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to register a new user",
         )
-
-
-@router.get("/users/me/", response_model=User)
-async def read_users_me(current_user: User = Depends(get_current_active_user)):
-    return current_user
-
-
-@router.get("/users/me/items/")
-async def read_own_items(current_user: User = Depends(get_current_active_user)):
-    return [{"item_id": "Foo", "owner": current_user.username}]

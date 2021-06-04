@@ -24,16 +24,6 @@ def test_health():
     assert response.json() == expected_result
 
 
-def test_GET_ping():
-    path = "/ping"
-
-    expect_content = {"ping": "pong!"}
-    r = requests.get(BASE_ENDPOINT + path)
-
-    assert r.status_code == normal_status
-    assert r.json() == expect_content
-
-
 def test_GET_all_notes():
     access_token = get_access_token()
     path = "/notes"

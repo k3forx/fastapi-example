@@ -9,13 +9,37 @@ spec:
     spec:
       containers:
         - name: mysql
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           image: mysql:5.7
           ports:
             - containerPort: 3306
           envFrom:
             - secretRef:
                 name: mysql-secret
+          # resources:
+          #   requests:
+          #     memory: "128Mi"
+          #     cpu: "50M"
+          #   limits:
+          #     memory: "128Mi"
+          #     cpu: "50M"
+          securityContext:
+            runAsUser: 12345
+            runAsGroup: 12345
+            readOnlyRootFilesystem: true
+          livenessProbe:
+            exec:
+              command: ["mysqladmin", "ping"]
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          # readinessProbe:
+          #   exec:
+          #     # Check we can execute queries over TCP (skip-networking is off).
+          #     command: ["mysql", "-h", "127.0.0.1", "-e", "SELECT 1"]
+          #   initialDelaySeconds: 15
+          #   periodSeconds: 5
+          #   timeoutSeconds: 1
   volumeClaimTemplates:
     - metadata:
         name: mysql-storage

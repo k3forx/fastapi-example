@@ -1,4 +1,4 @@
 green==3.2.5
-requests==2.31.0
+requests==2.33.0
 pytest==9.0.3
 pytest-cov==2.12.0

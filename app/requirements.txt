@@ -3,6 +3,6 @@ uvicorn==0.13.4
 PyMySQL==1.1.1
 starlette_exporter==0.7.0
 PyYAML==5.4.1
-python-jose==3.2.0
+python-jose==3.4.0
 passlib==1.7.4
 python-multipart==0.0.31

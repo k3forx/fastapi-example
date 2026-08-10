@@ -1,3 +1,37 @@
+# Prometheus Operator
+
+Prometheus, alertmanager, and pushgeteway can be managed by Prometheus operator.
+
+## Deploy
+
+```bash
+kubectl apply -f argocd/namespaces/monitoring.yaml
+
+kubectl apply -f argocd/projects/monitoring/project.yaml
+
+kubectl apply -f argocd/projects/monitoring/prometheus-operator.yaml
+```
+
+With Argo CD, Prometheus is automatically deployed.
+
+## Visualize metric by Prometheus UI
+
+At first, you need to expose service with `minikube service` command.
+
+```bash
+minikube service -n monitoring prometheus --url
+```
+
+You can get URL of Prometheus UI and visualize metrics of applications with PromQL. The following queries are examples.
+
+- The number of 4xx errors in 5 mins: `sum(increase(fastapi_requests_total{status_code=~"4[0-9]+", path="/notes/{note_id}"}[5m]))`
+
+## Visualize metrics by Grafana
+
+### Add a new datasource
+
+- prometheus.monitoring.svc.cluster.local:9090
+
 # Prometheus
 
 With prometheus and Grafana and alert manager, you can monitor the application.
